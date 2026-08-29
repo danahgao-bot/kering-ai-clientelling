@@ -1,0 +1,448 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>AI Clienteling Prototype</title>
+<style>
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+  body { font-family: -apple-system, 'SF Pro Display', 'Helvetica Neue', 'PingFang SC', sans-serif; background: #FFF; color: #000; }
+
+  /* Top Bar */
+  .topbar { background: #000; height: 48px; display: flex; align-items: center; padding: 0 24px; position: fixed; top: 0; left: 0; right: 0; z-index: 100; }
+  .topbar .logo { color: #FFF; font-weight: 400; font-size: 14px; letter-spacing: 2px; }
+  .topbar .tabs { margin-left: 32px; display: flex; }
+  .topbar .tab { padding: 14px 20px; cursor: pointer; font-size: 13px; color: rgba(255,255,255,0.5); border-bottom: 2px solid transparent; transition: all 0.2s; }
+  .topbar .tab.active { color: #FFF; border-bottom-color: #FFF; font-weight: 400; }
+  .topbar .tab:hover { color: rgba(255,255,255,0.8); }
+  .topbar .avatar { margin-left: auto; width: 28px; height: 28px; border-radius: 50%; background: rgba(255,255,255,0.15); display: flex; align-items: center; justify-content: center; color: #FFF; font-size: 12px; }
+
+  .content { margin-top: 48px; height: calc(100vh - 48px); overflow: auto; }
+  .screen { display: none; height: 100%; }
+  .screen.active { display: flex; }
+
+  /* ===== Client 360 ===== */
+  .client-list { width: 220px; background: #FFF; border-right: 1px solid #E8E8E8; display: flex; flex-direction: column; flex-shrink: 0; }
+  .client-list .search { padding: 16px 16px 8px; }
+  .client-list .search-label { font-size: 12px; color: #999; margin-bottom: 8px; }
+  .client-list .search-box { padding: 8px 12px; background: #F5F5F5; font-size: 13px; color: #999; }
+  .client-list .list { flex: 1; overflow-y: auto; padding: 4px 8px; }
+  .client-item { padding: 10px 12px; cursor: pointer; margin-bottom: 2px; display: flex; align-items: center; gap: 10px; border-left: 3px solid transparent; transition: all 0.15s; }
+  .client-item:hover { background: #F5F5F5; }
+  .client-item.active { background: #F5F5F5; border-left-color: #000; }
+  .client-avatar { width: 32px; height: 32px; background: #000; color: #FFF; display: flex; align-items: center; justify-content: center; font-size: 13px; font-weight: 400; flex-shrink: 0; }
+  .client-info { flex: 1; min-width: 0; }
+  .client-name { font-size: 13px; font-weight: 500; }
+  .client-visit { font-size: 11px; color: #999; margin-top: 2px; }
+  .tier-badge { padding: 2px 8px; font-size: 11px; font-weight: 400; letter-spacing: 0.5px; flex-shrink: 0; }
+  .tier-vvip { background: #000; color: #FFF; }
+  .tier-vip { background: #666; color: #FFF; }
+  .tier-vic { background: #E8E8E8; color: #333; }
+
+  .client-profile { flex: 1; padding: 20px; overflow-y: auto; }
+  .profile-header { display: flex; align-items: center; gap: 12px; margin-bottom: 16px; }
+  .profile-avatar { width: 56px; height: 56px; background: #000; color: #FFF; display: flex; align-items: center; justify-content: center; font-size: 22px; font-weight: 400; }
+  .profile-name { font-size: 20px; font-weight: 400; }
+  .profile-meta { display: flex; align-items: center; gap: 8px; margin-top: 4px; }
+  .profile-meta span { font-size: 12px; color: #999; }
+
+  .ai-summary { background: #F5F5F5; padding: 14px 16px; margin-bottom: 16px; border-left: 3px solid #000; }
+  .ai-summary .label { font-size: 12px; font-weight: 400; color: #000; margin-bottom: 4px; }
+  .ai-summary .text { font-size: 13px; line-height: 1.5; }
+
+  .section { margin-bottom: 16px; }
+  .section-label { font-size: 12px; font-weight: 400; color: #999; margin-bottom: 8px; text-transform: uppercase; letter-spacing: 0.5px; }
+  .tags { display: flex; flex-wrap: wrap; gap: 6px; }
+  .tag { padding: 4px 10px; background: #F5F5F5; font-size: 12px; color: #333; }
+
+  .timeline-item { display: flex; gap: 12px; margin-bottom: 8px; align-items: flex-start; }
+  .timeline-date { font-size: 12px; color: #999; min-width: 44px; }
+  .timeline-type { padding: 2px 8px; font-size: 11px; }
+  .type-visit { background: #F5F5F5; color: #333; }
+  .type-wechat { background: #F5F5F5; color: #000; }
+  .timeline-detail { font-size: 13px; }
+
+  .stats-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 12px; }
+  .stat-card { text-align: center; }
+  .stat-value { font-size: 20px; font-weight: 400; color: #000; }
+  .stat-label { font-size: 11px; color: #999; margin-top: 2px; }
+
+  .ai-panel { width: 240px; background: #FFF; border-left: 1px solid #E8E8E8; padding: 16px; overflow-y: auto; flex-shrink: 0; }
+  .ai-panel .label { font-size: 12px; font-weight: 400; color: #000; margin-bottom: 12px; }
+  .ai-card { background: #F5F5F5; border: 1px solid #E8E8E8; padding: 12px; margin-bottom: 12px; }
+  .confidence { display: flex; align-items: center; gap: 6px; margin-bottom: 8px; }
+  .confidence-dot { width: 8px; height: 8px; border-radius: 50%; }
+  .confidence-high { background: #000; }
+  .confidence-text { font-size: 12px; font-weight: 400; }
+  .ai-card p { font-size: 13px; margin-bottom: 8px; line-height: 1.5; }
+  .ai-card .secondary { font-size: 12px; color: #999; }
+  .action-btn { display: block; width: 100%; padding: 8px 12px; margin-bottom: 6px; background: #F5F5F5; border: none; font-size: 12px; cursor: pointer; text-align: left; transition: background 0.15s; }
+  .action-btn:hover { background: #E8E8E8; }
+
+  .divider { height: 1px; background: #E8E8E8; margin: 16px 0; }
+
+  /* ===== Smart Moments ===== */
+  .moments-screen { flex-direction: column; padding: 24px; }
+  .moments-header { max-width: 800px; margin: 0 auto 20px; width: 100%; display: flex; align-items: center; }
+  .moments-header h2 { font-size: 18px; font-weight: 400; }
+  .moments-header .date { font-size: 12px; color: #999; margin-top: 2px; }
+  .moments-header .count { margin-left: auto; text-align: center; }
+  .moments-header .count .num { font-size: 24px; font-weight: 400; color: #000; }
+  .moments-header .count .lbl { font-size: 11px; color: #999; }
+  .moments-list { max-width: 800px; margin: 0 auto; width: 100%; display: flex; flex-direction: column; gap: 12px; }
+
+  .moment-card { background: #FFF; border-left: 4px solid; }
+  .moment-card.high { border-left-color: #000; }
+  .moment-card.medium { border-left-color: #666; }
+  .moment-card.low { border-left-color: #999; }
+  .moment-header { padding: 12px 16px; display: flex; align-items: center; gap: 8px; }
+  .priority-dot { width: 10px; height: 10px; border-radius: 50%; flex-shrink: 0; }
+  .priority-dot.high { background: #000; }
+  .priority-dot.medium { background: #666; }
+  .priority-dot.low { background: #999; }
+  .moment-client { font-weight: 400; font-size: 14px; }
+  .moment-reason { padding: 2px 8px; font-size: 11px; font-weight: 400; }
+  .reason-high { background: #F5F5F5; color: #000; }
+  .reason-medium { background: #F5F5F5; color: #333; }
+  .reason-low { background: #F5F5F5; color: #666; }
+  .moment-detail { margin-left: auto; font-size: 12px; color: #999; }
+  .moment-body { padding: 0 16px 16px; }
+  .moment-body .ai-label { font-size: 12px; color: #999; margin-bottom: 8px; }
+  .moment-body .suggestion { font-size: 13px; margin-bottom: 12px; line-height: 1.5; }
+  .script-box { background: #F5F5F5; padding: 10px 14px; border-left: 3px solid #000; margin-bottom: 12px; }
+  .script-box .label { font-size: 11px; color: #999; margin-bottom: 4px; }
+  .script-box .text { font-size: 13px; font-style: italic; line-height: 1.5; }
+  .moment-actions { display: flex; gap: 8px; }
+  .btn { padding: 6px 14px; font-size: 12px; cursor: pointer; border: none; transition: all 0.15s; }
+  .btn-primary { background: #000; color: #FFF; }
+  .btn-primary:hover { background: #333; }
+  .btn-secondary { background: #F5F5F5; color: #000; }
+  .btn-secondary:hover { background: #E8E8E8; }
+
+  /* ===== Brand Voice ===== */
+  .voice-screen { flex-direction: column; padding: 24px; }
+  .voice-content { max-width: 800px; margin: 0 auto; width: 100%; }
+  .voice-content h2 { font-size: 18px; font-weight: 400; margin-bottom: 4px; }
+  .voice-content .subtitle { font-size: 12px; color: #999; margin-bottom: 20px; }
+  .brand-selector { display: flex; gap: 8px; margin-bottom: 20px; }
+  .brand-btn { padding: 6px 16px; font-size: 13px; cursor: pointer; border: 1px solid #E8E8E8; background: #FFF; transition: all 0.15s; }
+  .brand-btn.active { background: #000; color: #FFF; border-color: #000; }
+  .brand-btn:hover:not(.active) { background: #F5F5F5; }
+
+  .voice-card { background: #FFF; padding: 16px; margin-bottom: 16px; }
+  .voice-card .brand-name { font-weight: 600; margin-right: 8px; }
+  .voice-card .tone-pill { display: inline-block; padding: 2px 10px; background: #F5F5F5; font-size: 11px; color: #333; }
+  .voice-example { background: #F5F5F5; padding: 12px 16px; margin-top: 8px; }
+  .voice-example .label { font-size: 11px; color: #999; margin-bottom: 4px; }
+  .voice-example .text { font-size: 13px; font-style: italic; line-height: 1.5; }
+
+  .composer { background: #FFF; overflow: hidden; }
+  .composer-header { padding: 12px 16px; border-bottom: 1px solid #E8E8E8; font-weight: 400; font-size: 14px; }
+  .composer-body { padding: 16px; }
+  .field { margin-bottom: 12px; }
+  .field .label { font-size: 12px; color: #999; margin-bottom: 4px; }
+  .field .value { padding: 10px 14px; background: #F5F5F5; font-size: 13px; border: 1px solid #E8E8E8; }
+  .client-field { display: flex; align-items: center; gap: 6px; }
+  .client-field .mini-avatar { width: 24px; height: 24px; background: #000; color: #FFF; display: flex; align-items: center; justify-content: center; font-size: 11px; font-weight: 400; }
+
+  .ai-result { margin-top: 12px; }
+  .ai-result .header { display: flex; align-items: center; gap: 8px; margin-bottom: 8px; }
+  .ai-result .header .title { font-size: 12px; font-weight: 400; color: #000; }
+  .ai-result .header .match { font-size: 12px; color: #999; }
+  .ai-result .message { background: #F5F5F5; padding: 14px 18px; border: 1px solid #E8E8E8; font-size: 13px; line-height: 1.6; }
+  .composer-actions { display: flex; gap: 8px; margin-top: 12px; }
+</style>
+</head>
+<body>
+
+<div class="topbar">
+  <div class="logo">AI CLIENTELING</div>
+  <div class="tabs">
+    <div class="tab active" onclick="switchTab(0)">Client 360</div>
+    <div class="tab" onclick="switchTab(1)">Smart Moments</div>
+    <div class="tab" onclick="switchTab(2)">品牌沟通助手</div>
+  </div>
+  <div class="avatar">SA</div>
+</div>
+
+<div class="content">
+  <!-- Screen 1: Client 360 -->
+  <div class="screen active" id="screen-0">
+    <div class="client-list">
+      <div class="search">
+        <div class="search-label">客户列表</div>
+        <div class="search-box">🔍 搜索客户...</div>
+      </div>
+      <div class="list">
+        <div class="client-item active" onclick="selectClient(this, 0)">
+          <div class="client-avatar">W</div>
+          <div class="client-info"><div class="client-name">王女士</div><div class="client-visit">3周前</div></div>
+          <span class="tier-badge tier-vvip">VVIP</span>
+        </div>
+        <div class="client-item" onclick="selectClient(this, 1)">
+          <div class="client-avatar">L</div>
+          <div class="client-info"><div class="client-name">李先生</div><div class="client-visit">1周前</div></div>
+          <span class="tier-badge tier-vip">VIP</span>
+        </div>
+        <div class="client-item" onclick="selectClient(this, 2)">
+          <div class="client-avatar">Z</div>
+          <div class="client-info"><div class="client-name">张小姐</div><div class="client-visit">2天前</div></div>
+          <span class="tier-badge tier-vic">VIC</span>
+        </div>
+        <div class="client-item" onclick="selectClient(this, 3)">
+          <div class="client-avatar">C</div>
+          <div class="client-info"><div class="client-name">陈先生</div><div class="client-visit">1月前</div></div>
+          <span class="tier-badge tier-vip">VIP</span>
+        </div>
+        <div class="client-item" onclick="selectClient(this, 4)">
+          <div class="client-avatar">D</div>
+          <div class="client-info"><div class="client-name">刘太太</div><div class="client-visit">5天前</div></div>
+          <span class="tier-badge tier-vvip">VVIP</span>
+        </div>
+      </div>
+    </div>
+
+    <div class="client-profile">
+      <div class="profile-header">
+        <div class="profile-avatar">W</div>
+        <div>
+          <div class="profile-name">王女士</div>
+          <div class="profile-meta">
+            <span class="tier-badge tier-vvip">VVIP</span>
+            <span>32岁 · 极简风格 · 尺码S</span>
+          </div>
+        </div>
+      </div>
+
+      <div class="ai-summary">
+        <div class="label">AI 客户摘要</div>
+        <div class="text">偏好极简风格。3周前试穿绿色丝质衬衫未购买。本周上新极简绿色系成衣。</div>
+      </div>
+
+      <div class="section">
+        <div class="section-label">偏好标签</div>
+        <div class="tags">
+          <span class="tag">极简风格</span><span class="tag">绿色系</span><span class="tag">成衣</span>
+          <span class="tag">丝质面料</span><span class="tag">尺码S</span><span class="tag">低调配饰</span>
+        </div>
+      </div>
+
+      <div class="divider"></div>
+
+      <div class="section">
+        <div class="section-label">最近互动</div>
+        <div class="timeline-item">
+          <span class="timeline-date">08/20</span>
+          <span class="timeline-type type-visit">到店</span>
+          <span class="timeline-detail">试穿绿色丝质衬衫，未购买</span>
+        </div>
+        <div class="timeline-item">
+          <span class="timeline-date">08/10</span>
+          <span class="timeline-type type-wechat">微信</span>
+          <span class="timeline-detail">咨询秋季新品上架时间</span>
+        </div>
+        <div class="timeline-item">
+          <span class="timeline-date">07/28</span>
+          <span class="timeline-type type-visit">到店</span>
+          <span class="timeline-detail">购买米色斜纹软呢外套 ¥18,500</span>
+        </div>
+      </div>
+
+      <div class="divider"></div>
+
+      <div class="section">
+        <div class="section-label">交易概览</div>
+        <div class="stats-grid">
+          <div class="stat-card"><div class="stat-value">¥156,000</div><div class="stat-label">累计消费</div></div>
+          <div class="stat-card"><div class="stat-value">8</div><div class="stat-label">到店次数</div></div>
+          <div class="stat-card"><div class="stat-value">¥19,500</div><div class="stat-label">平均客单价</div></div>
+        </div>
+      </div>
+    </div>
+
+    <div class="ai-panel">
+      <div class="label">AI 建议</div>
+      <div class="ai-card">
+        <div class="confidence">
+          <span class="confidence-dot confidence-high"></span>
+          <span class="confidence-text">高置信度</span>
+        </div>
+        <p>推荐 Green Minimal 系列新品，与王女士偏好高度匹配。</p>
+        <p class="secondary">本周上新3款极简绿色系成衣，尺码S有货。</p>
+      </div>
+      <div class="section-label">快捷操作</div>
+      <button class="action-btn">📋 准备搭配方案</button>
+      <button class="action-btn">💬 发送邀请</button>
+      <button class="action-btn">📝 记录反馈</button>
+    </div>
+  </div>
+
+  <!-- Screen 2: Smart Moments -->
+  <div class="screen moments-screen" id="screen-1">
+    <div class="moments-header">
+      <div>
+        <h2>今日 Smart Moments</h2>
+        <div class="date">2026年8月28日 · Bottega Veneta</div>
+      </div>
+      <div class="count"><div class="num">3</div><div class="lbl">待处理</div></div>
+    </div>
+    <div class="moments-list">
+      <div class="moment-card high">
+        <div class="moment-header">
+          <span class="priority-dot high"></span>
+          <span class="moment-client">李太太</span>
+          <span class="moment-reason reason-high">沉默预警</span>
+          <span class="moment-detail">高价值客户，72天未互动</span>
+        </div>
+        <div class="moment-body">
+          <div class="ai-label">AI 建议</div>
+          <div class="suggestion">李太太上次购买了经典编织包。本周上新同系列钱包，可以此为契机联系。</div>
+          <div class="script-box">
+            <div class="label">建议话术</div>
+            <div class="text">"李姐您好，好久没见！我们刚到了一款和您那只编织包同系列的钱包，想到您可能会喜欢，方便的话给您发几张图看看？"</div>
+          </div>
+          <div class="moment-actions">
+            <button class="btn btn-primary">发送消息</button>
+            <button class="btn btn-secondary">编辑话术</button>
+            <button class="btn btn-secondary">稍后提醒</button>
+          </div>
+        </div>
+      </div>
+
+      <div class="moment-card medium">
+        <div class="moment-header">
+          <span class="priority-dot medium"></span>
+          <span class="moment-client">陈先生</span>
+          <span class="moment-reason reason-medium">购买满1周年</span>
+          <span class="moment-detail">明天是购买对戒的纪念日</span>
+        </div>
+        <div class="moment-body">
+          <div class="ai-label">AI 建议</div>
+          <div class="suggestion">陈先生一年前购买了结婚对戒。可以借此机会感谢支持，并推荐一周年纪念小物。</div>
+          <div class="script-box">
+            <div class="label">建议话术</div>
+            <div class="text">"陈先生您好，感谢您一年前选择Bottega Veneta的结婚对戒。为纪念这个特别的日子，我们为您准备了一份小心意，期待您的光临。"</div>
+          </div>
+          <div class="moment-actions">
+            <button class="btn btn-primary">发送消息</button>
+            <button class="btn btn-secondary">编辑话术</button>
+            <button class="btn btn-secondary">稍后提醒</button>
+          </div>
+        </div>
+      </div>
+
+      <div class="moment-card low">
+        <div class="moment-header">
+          <span class="priority-dot low"></span>
+          <span class="moment-client">赵小姐</span>
+          <span class="moment-reason reason-low">购后第7天关怀</span>
+          <span class="moment-detail">上周购买了第一双BV高跟鞋</span>
+        </div>
+        <div class="moment-body">
+          <div class="ai-label">AI 建议</div>
+          <div class="suggestion">赵小姐上周购买了第一双BV高跟鞋。可以发送保养建议，并推荐搭配鞋垫/护理套装。</div>
+          <div class="script-box">
+            <div class="label">建议话术</div>
+            <div class="text">"赵小姐您好，感谢您选择BV高跟鞋。分享几个保养小贴士：避免雨天穿着，存放时请使用鞋撑保持鞋型。如需护理产品，我们也有专业护理套装。"</div>
+          </div>
+          <div class="moment-actions">
+            <button class="btn btn-primary">发送消息</button>
+            <button class="btn btn-secondary">编辑话术</button>
+            <button class="btn btn-secondary">稍后提醒</button>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Screen 3: Brand Voice -->
+  <div class="screen voice-screen" id="screen-2">
+    <div class="voice-content">
+      <h2>品牌沟通助手</h2>
+      <div class="subtitle">选择品牌，AI将基于品牌调性生成沟通内容</div>
+
+      <div class="brand-selector">
+        <button class="brand-btn active" onclick="selectBrand(this, 'gucci')">Gucci</button>
+        <button class="brand-btn" onclick="selectBrand(this, 'bv')">Bottega Veneta</button>
+        <button class="brand-btn" onclick="selectBrand(this, 'ysl')">Saint Laurent</button>
+      </div>
+
+      <div class="voice-card">
+        <div>
+          <span class="brand-name" id="voice-brand">Gucci</span>
+          <span class="tone-pill" id="voice-tone">大胆、创意、色彩丰富</span>
+        </div>
+        <div class="voice-example">
+          <div class="label">品牌话术示例</div>
+          <div class="text" id="voice-example">"亲爱的[名字]，Gucci全新系列即将揭幕，一场关于色彩与自由的对话——诚邀您成为第一批见证者 ✨"</div>
+        </div>
+      </div>
+
+      <div class="composer">
+        <div class="composer-header">生成沟通内容</div>
+        <div class="composer-body">
+          <div class="field">
+            <div class="label">沟通意图</div>
+            <div class="value">邀请VIP客户王女士参加新品预览活动</div>
+          </div>
+          <div class="field">
+            <div class="label">目标客户</div>
+            <div class="value client-field">
+              <span class="mini-avatar">W</span>
+              <span>王女士 · VVIP · 偏好极简风格</span>
+            </div>
+          </div>
+          <div class="divider" style="margin: 12px 0;"></div>
+          <div class="ai-result">
+            <div class="header">
+              <span class="title">AI 生成结果</span>
+              <span class="confidence-dot confidence-high" style="width:8px;height:8px;border-radius:50%;display:inline-block;"></span>
+              <span class="match">调性匹配度：高</span>
+            </div>
+            <div class="message" id="voice-message">
+              亲爱的王女士，<br><br>
+              Gucci全新系列即将揭幕——一场关于色彩与自由的对话。考虑到您对极简风格的偏爱，我们特别为您预留了私人预览时段。<br><br>
+              诚邀您成为第一批见证者。<br><br>
+              您的专属顾问 小李
+            </div>
+          </div>
+          <div class="composer-actions">
+            <button class="btn btn-primary">发送给客户</button>
+            <button class="btn btn-secondary">重新生成</button>
+            <button class="btn btn-secondary">编辑后发送</button>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<script>
+function switchTab(idx) {
+  document.querySelectorAll('.tab').forEach((t, i) => t.classList.toggle('active', i === idx));
+  document.querySelectorAll('.screen').forEach((s, i) => s.classList.toggle('active', i === idx));
+}
+
+function selectClient(el, idx) {
+  document.querySelectorAll('.client-item').forEach(c => c.classList.remove('active'));
+  el.classList.add('active');
+}
+
+const brands = {
+  gucci: { name: 'Gucci', tone: '大胆、创意、色彩丰富', example: '"亲爱的[名字]，Gucci全新系列即将揭幕，一场关于色彩与自由的对话——诚邀您成为第一批见证者 ✨"', message: '亲爱的王女士，<br><br>Gucci全新系列即将揭幕——一场关于色彩与自由的对话。考虑到您对极简风格的偏爱，我们特别为您预留了私人预览时段。<br><br>诚邀您成为第一批见证者。<br><br>您的专属顾问 小李' },
+  bv: { name: 'Bottega Veneta', tone: '低调、质感、工艺至上', example: '"[名字]您好，Bottega Veneta新一季作品已到店。当工艺遇见克制的美学，期待与您分享。"', message: '王女士您好，<br><br>Bottega Veneta新一季作品已悄然到店。这一季，我们以克制的方式重新诠释经典编织工艺。<br><br>如您方便，诚邀您到店品鉴。<br><br>您的专属顾问 小李' },
+  ysl: { name: 'Saint Laurent', tone: '酷感、极简、exclusive', example: '"[名字]，Saint Laurent私人预览现正开放。为您预留了专属时段。"', message: '王女士，<br><br>Saint Laurent私人预览现正开放。<br><br>已为您预留专属时段，期待您的莅临。<br><br>您的专属顾问 小李' },
+};
+
+function selectBrand(el, key) {
+  document.querySelectorAll('.brand-btn').forEach(b => b.classList.remove('active'));
+  el.classList.add('active');
+  const b = brands[key];
+  document.getElementById('voice-brand').textContent = b.name;
+  document.getElementById('voice-tone').textContent = b.tone;
+  document.getElementById('voice-example').textContent = b.example;
+  document.getElementById('voice-message').innerHTML = b.message;
+}
+</script>
+</body>
+</html>

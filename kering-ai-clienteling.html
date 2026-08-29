@@ -1,0 +1,1120 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>AI Clienteling — KERING 产品方案</title>
+<style>
+  :root {
+    --black: #000000; --dark: #1A1A1A; --gray-dark: #555555;
+    --gray: #999999; --gray-light: #E8E8E8; --gray-lighter: #F5F5F5;
+    --bg: #FFFFFF; --card: #FFFFFF; --text: #1A1A1A; --text-secondary: #666666;
+    --border: #E8E8E8; --accent: #000000;
+    --red: #C0392B; --green: #2E7D32; --blue: #1565C0; --yellow: #B8860B;
+  }
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+  html { scroll-behavior: smooth; }
+  body { font-family: -apple-system, 'SF Pro Display', 'Helvetica Neue', 'PingFang SC', 'Microsoft YaHei', sans-serif; background: var(--bg); color: var(--text); line-height: 1.7; }
+  .nav { position: fixed; top: 0; left: 0; right: 0; background: var(--black); z-index: 1000; height: 56px; display: flex; align-items: center; padding: 0 40px; }
+  .nav .brand { color: #fff; font-size: 13px; font-weight: 400; letter-spacing: 6px; text-transform: uppercase; }
+  .nav .links { margin-left: auto; display: flex; gap: 4px; }
+  .nav .links a { color: rgba(255,255,255,0.6); text-decoration: none; font-size: 12px; padding: 8px 14px; border-radius: 4px; transition: all 0.2s; }
+  .nav .links a:hover { color: #fff; background: rgba(255,255,255,0.1); }
+  .container { max-width: 1100px; margin: 0 auto; padding: 0 32px; }
+  section { padding: 80px 0 40px; }
+  .section-label { font-size: 11px; font-weight: 400; letter-spacing: 4px; text-transform: uppercase; color: var(--gray); margin-bottom: 12px; }
+  h1 { font-size: 36px; font-weight: 400; color: var(--black); line-height: 1.3; margin-bottom: 24px; letter-spacing: -0.5px; }
+  h2 { font-size: 26px; font-weight: 400; color: var(--black); margin-bottom: 20px; letter-spacing: -0.3px; }
+  h3 { font-size: 18px; font-weight: 600; color: var(--dark); margin-bottom: 16px; }
+  p { margin-bottom: 16px; font-size: 15px; color: #374151; }
+  .lead { font-size: 18px; color: var(--text-secondary); line-height: 1.8; margin-bottom: 32px; }
+  .hero { padding-top: 120px; padding-bottom: 60px; text-align: center; }
+  .hero h1 { font-size: 42px; max-width: 700px; margin: 0 auto 24px; font-weight: 300; letter-spacing: -1px; }
+  .hero .lead { max-width: 680px; margin: 0 auto 40px; font-size: 17px; }
+  .framework { display: inline-flex; gap: 8px; align-items: center; background: var(--bg); border: 1px solid var(--border); border-radius: 0; padding: 10px 28px; font-size: 13px; color: var(--dark); letter-spacing: 1px; }
+  .framework span { color: var(--gray); font-weight: 400; }
+  .card { background: var(--card); border: 1px solid var(--border); border-radius: 0; padding: 32px; margin-bottom: 20px; }
+  .card-highlight { border-left: 2px solid var(--black); }
+  .card-quote { background: var(--black); color: #fff; border-radius: 0; padding: 36px 40px; margin: 24px 0; }
+  .card-quote p { color: rgba(255,255,255,0.9); font-size: 16px; margin: 0; }
+  .journey-scroll { overflow-x: auto; padding-bottom: 16px; }
+  .journey-table { width: 100%; min-width: 900px; border-collapse: separate; border-spacing: 0; font-size: 13px; }
+  .journey-table th { background: #fff; padding: 16px 12px 12px; font-weight: 400; text-align: center; border-bottom: 1px solid var(--border); vertical-align: top; }
+  .journey-table th:first-child { border-radius: 0; text-align: left; padding-left: 20px; width: 100px; background: var(--gray-lighter); }
+  .journey-table th .th-icon { width: 44px; height: 44px; border-radius: 50%; background: var(--black); display: inline-flex; align-items: center; justify-content: center; font-size: 18px; margin-bottom: 8px; }
+  .journey-table th .th-name { font-size: 14px; font-weight: 600; color: var(--black); display: block; margin-bottom: 2px; }
+  .journey-table th .th-en { font-size: 10px; color: var(--gray); letter-spacing: 1px; text-transform: uppercase; }
+  .journey-table td { padding: 14px 12px; border-bottom: 1px solid var(--border); vertical-align: top; background: #fff; }
+  .journey-table .group-label-cell { background: var(--gray-lighter) !important; font-weight: 600; font-size: 18px; color: var(--black); writing-mode: vertical-rl; text-orientation: mixed; letter-spacing: 2px; padding: 8px 16px; white-space: nowrap; }
+  .journey-table tr:last-child td { border-bottom: none; }
+  .journey-table tr:last-child td:first-child { border-radius: 0; }
+  .journey-table tr:last-child td:last-child { border-radius: 0; }
+  .journey-table .sub-tag { display: inline-block; font-size: 11px; padding: 2px 10px; border-radius: 0; margin-bottom: 4px; font-weight: 400; }
+  .journey-table .sub-tag.pain { background: var(--black); color: #fff; }
+  .journey-table .sub-tag.gain { background: var(--gray-lighter); color: var(--dark); border: 1px solid var(--border); }
+  .journey-table .sub-tag.efficiency { background: #fff; color: var(--gray); border: 1px solid var(--border); }
+  .arch-layer { background: var(--card); border: 1px solid var(--border); border-radius: 0; padding: 24px; margin-bottom: 12px; position: relative; }
+  .arch-layer .layer-label { position: absolute; top: -10px; left: 20px; background: var(--black); color: #fff; font-size: 10px; font-weight: 400; padding: 3px 14px; letter-spacing: 2px; text-transform: uppercase; }
+  .arch-items { display: flex; flex-wrap: wrap; gap: 10px; margin-top: 12px; }
+  .arch-item { background: var(--gray-lighter); border-radius: 0; padding: 12px 16px; font-size: 13px; font-weight: 400; text-align: center; flex: 1; min-width: 120px; border: 1px solid var(--border); }
+  .arch-item.gold { background: var(--black); color: #fff; font-weight: 400; border: none; }
+  .arch-connector { text-align: center; color: var(--gray); font-size: 20px; margin: 4px 0; }
+  .arch-brand-row { display: flex; gap: 10px; margin-top: 10px; }
+  .arch-brand { flex: 1; background: var(--bg); border: 1px solid var(--border); border-radius: 0; padding: 12px; text-align: center; font-size: 12px; }
+  .arch-brand strong { display: block; color: var(--black); margin-bottom: 4px; font-weight: 600; letter-spacing: 1px; }
+  .governance-bar { background: var(--black); border-radius: 0; padding: 18px 24px; display: flex; align-items: center; gap: 24px; margin-top: 12px; }
+  .governance-bar .g-label { color: #fff; font-weight: 400; font-size: 10px; letter-spacing: 3px; text-transform: uppercase; white-space: nowrap; }
+  .governance-bar .g-items { display: flex; gap: 12px; flex-wrap: wrap; }
+  .governance-bar .g-item { color: rgba(255,255,255,0.7); font-size: 12px; }
+
+  /* ─── New Architecture V2 ─── */
+  .arch-layer-v2 { border: 1px solid var(--border); border-radius: 0; padding: 24px; margin-bottom: 0; }
+  .arch-layer-header { display: flex; align-items: center; gap: 16px; margin-bottom: 20px; }
+  .arch-layer-num { width: 32px; height: 32px; background: var(--black); color: #fff; display: flex; align-items: center; justify-content: center; font-size: 14px; font-weight: 600; flex-shrink: 0; }
+  .arch-layer-title { font-size: 16px; font-weight: 600; color: var(--black); }
+  .arch-layer-subtitle { font-size: 12px; color: var(--gray); margin-top: 2px; }
+  .arch-layer-content { display: flex; gap: 16px; flex-wrap: wrap; }
+  .arch-subgroup { flex: 1; min-width: 200px; background: #fff; border: 1px solid var(--border); padding: 16px; }
+  .arch-subgroup-label { font-size: 12px; font-weight: 600; color: var(--black); margin-bottom: 4px; letter-spacing: 0.5px; }
+  .arch-subgroup-desc { font-size: 11px; color: var(--gray); margin-bottom: 12px; font-style: italic; }
+  .arch-components { display: flex; flex-wrap: wrap; gap: 8px; }
+  .arch-comp { background: var(--gray-lighter); border: 1px solid var(--border); padding: 8px 12px; font-size: 12px; color: var(--dark); flex: 1; min-width: 120px; }
+  .arch-comp-sub { font-size: 10px; color: var(--gray); }
+  .arch-comp-icon { background: var(--gray-lighter); border: 1px solid var(--border); padding: 8px 12px; font-size: 12px; color: var(--dark); font-weight: 500; }
+  .arch-arrow { text-align: center; font-size: 20px; color: var(--gray); padding: 8px 0; }
+
+  /* Layer-specific backgrounds */
+  .arch-model { background: var(--black); }
+  .arch-model .arch-layer-num { background: #fff; color: var(--black); }
+  .arch-model .arch-layer-title { color: #fff; }
+  .arch-model .arch-layer-subtitle { color: rgba(255,255,255,0.6); }
+  .arch-model .arch-subgroup { background: rgba(255,255,255,0.08); border-color: rgba(255,255,255,0.15); }
+  .arch-model .arch-subgroup-label { color: #fff; }
+  .arch-model .arch-subgroup-desc { color: rgba(255,255,255,0.5); }
+  .arch-model .arch-comp { background: rgba(255,255,255,0.12); border-color: rgba(255,255,255,0.2); color: #fff; }
+  .arch-model .arch-comp-sub { color: rgba(255,255,255,0.5); }
+  .arch-model .arch-comp-icon { background: rgba(255,255,255,0.12); border-color: rgba(255,255,255,0.2); color: #fff; }
+
+  .arch-ai-cap { background: var(--gray-lighter); }
+  .arch-agent { background: #fff; border: 2px solid var(--black); }
+  .arch-app { background: #fff; }
+  .arch-brand-config { background: #fff; border: 1px dashed var(--gray); }
+
+  /* Agent cards */
+  .arch-agent-card { flex: 1; min-width: 180px; background: var(--gray-lighter); border: 1px solid var(--border); padding: 20px; text-align: center; }
+  .arch-agent-icon { font-size: 28px; margin-bottom: 8px; }
+  .arch-agent-name { font-size: 15px; font-weight: 600; color: var(--black); margin-bottom: 4px; }
+  .arch-agent-desc { font-size: 12px; color: var(--text-secondary); margin-bottom: 12px; }
+  .arch-agent-skills { display: flex; flex-wrap: wrap; gap: 6px; justify-content: center; }
+  .arch-skill { font-size: 10px; padding: 3px 8px; background: #fff; border: 1px solid var(--border); color: var(--dark); }
+
+  /* App cards */
+  .arch-app-grid { display: grid; grid-template-columns: repeat(4, 1fr); gap: 12px; width: 100%; }
+  .arch-app-card { background: var(--gray-lighter); border: 1px solid var(--border); padding: 20px; text-align: center; }
+  .arch-app-icon { font-size: 24px; margin-bottom: 8px; }
+  .arch-app-name { font-size: 14px; font-weight: 600; color: var(--black); margin-bottom: 4px; }
+  .arch-app-desc { font-size: 11px; color: var(--text-secondary); }
+
+  /* Brand grid */
+  .arch-brand-grid { display: grid; grid-template-columns: repeat(4, 1fr); gap: 12px; width: 100%; }
+  .arch-brand-card { background: var(--gray-lighter); border: 1px solid var(--border); padding: 16px; text-align: center; }
+  .arch-brand-name { font-size: 13px; font-weight: 600; color: var(--black); margin-bottom: 4px; letter-spacing: 0.5px; }
+  .arch-brand-items { font-size: 11px; color: var(--text-secondary); }
+  .arch-brand-more { display: flex; align-items: center; justify-content: center; font-size: 20px; color: var(--gray); }
+
+  /* Orchestration Agent */
+  .arch-orch-card { background: var(--black); padding: 14px 24px; margin-bottom: 14px; display: flex; align-items: center; justify-content: center; gap: 14px; }
+  .arch-orch-icon { font-size: 22px; }
+  .arch-orch-name { font-size: 15px; font-weight: 600; color: #fff; }
+  .arch-orch-desc { font-size: 11px; color: rgba(255,255,255,0.55); margin-top: 2px; }
+
+  /* Brand sub-layer */
+  .arch-brand-sub { border-top: 1px dashed var(--border); padding-top: 14px; margin-top: 14px; }
+  .arch-brand-sub-label { font-size: 10px; font-weight: 600; color: var(--gray); letter-spacing: 1px; text-transform: uppercase; margin-bottom: 10px; }
+
+  /* Layer 0: Cross-cutting */
+  .arch-cross { background: var(--black); }
+  .arch-cross .arch-layer-title { color: #fff; }
+  .arch-cross .arch-layer-subtitle { color: rgba(255,255,255,0.5); }
+  .arch-cross-items { display: flex; gap: 16px; flex-wrap: wrap; }
+  .arch-cross-item { flex: 1 1 160px; }
+  .arch-cross-name { font-size: 12px; font-weight: 600; color: #fff; margin-bottom: 6px; }
+  .arch-cross-sub { font-size: 10px; color: rgba(255,255,255,0.5); line-height: 1.8; }
+
+  /* Design notes */
+  .arch-design-notes { margin-top: 24px; padding-top: 20px; border-top: 1px solid var(--border); }
+  .arch-design-notes-title { font-size: 14px; font-weight: 600; color: var(--black); margin-bottom: 12px; }
+  .arch-design-notes-text { font-size: 13px; color: var(--text-secondary); line-height: 2; }
+  .arch-design-notes-text strong { color: var(--black); font-weight: 600; }
+
+  /* Governance bar v2 */
+  .governance-bar-v2 { background: var(--black); border-radius: 0; padding: 18px 24px; display: flex; align-items: center; gap: 24px; margin-top: 16px; }
+  .governance-bar-v2 .governance-label { color: #fff; font-weight: 400; font-size: 10px; letter-spacing: 3px; text-transform: uppercase; white-space: nowrap; }
+  .governance-bar-v2 .governance-items { display: flex; gap: 12px; flex-wrap: wrap; }
+  .governance-bar-v2 .governance-item { color: rgba(255,255,255,0.7); font-size: 12px; }
+  .solution-header { display: flex; align-items: baseline; gap: 16px; margin-bottom: 8px; }
+  .solution-num { font-size: 48px; font-weight: 200; color: var(--gray-light); line-height: 1; letter-spacing: -2px; }
+  .solution-title { font-size: 24px; font-weight: 400; color: var(--black); letter-spacing: -0.3px; }
+  .solution-subtitle { font-size: 15px; color: var(--text-secondary); margin-bottom: 24px; }
+
+  /* Solution brief */
+  .solution-brief { display: flex; gap: 16px; flex-wrap: wrap; margin-bottom: 24px; padding: 16px 20px; background: var(--gray-lighter); border-left: 3px solid var(--black); }
+  .solution-brief-item { font-size: 13px; color: var(--dark); line-height: 1.6; flex: 1 1 200px; }
+  .solution-brief-item strong { color: var(--black); font-weight: 600; }
+
+  /* Tech deep dive */
+  .tech-deep-dive { margin: 24px 0 40px; }
+  .tech-deep-title { font-size: 16px; font-weight: 600; color: var(--black); margin-bottom: 20px; padding-bottom: 8px; border-bottom: 2px solid var(--black); }
+  .tech-subsection { margin-bottom: 24px; }
+  .tech-subtitle { font-size: 14px; font-weight: 600; color: var(--dark); margin-bottom: 12px; }
+
+  /* Tech pipeline */
+  .tech-pipeline { display: flex; align-items: center; gap: 0; flex-wrap: wrap; padding: 16px 0; }
+  .tech-pipe-step { background: var(--gray-lighter); border: 1px solid var(--border); padding: 12px 16px; text-align: center; font-size: 12px; font-weight: 600; color: var(--black); min-width: 120px; }
+  .tech-pipe-step span { display: block; font-size: 10px; font-weight: 400; color: var(--text-secondary); margin-top: 4px; }
+  .tech-pipe-arrow { font-size: 18px; color: var(--gray); padding: 0 8px; flex-shrink: 0; }
+
+  /* Tech table */
+  .tech-table { width: 100%; border-collapse: collapse; font-size: 13px; margin: 12px 0; }
+  .tech-table th { background: var(--gray-lighter); font-weight: 600; text-align: left; padding: 10px 12px; color: var(--dark); border-bottom: 2px solid var(--border); }
+  .tech-table td { padding: 10px 12px; border-bottom: 1px solid var(--border); color: var(--dark); vertical-align: top; }
+
+  /* Flywheel */
+  .tech-flywheel { display: flex; align-items: center; gap: 0; flex-wrap: wrap; padding: 12px 0; }
+  .flywheel-step { background: var(--black); color: #fff; padding: 10px 16px; font-size: 11px; font-weight: 600; text-align: center; }
+  .flywheel-arrow { font-size: 16px; color: var(--gray); padding: 0 6px; flex-shrink: 0; }
+  .feature-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 16px; margin: 20px 0; }
+  .feature-card { background: var(--gray-lighter); border-radius: 0; padding: 20px; border: 1px solid var(--border); }
+  .feature-card h4 { font-size: 14px; font-weight: 600; color: var(--dark); margin-bottom: 8px; }
+  .feature-card p { font-size: 13px; color: var(--text-secondary); margin: 0; }
+  .example-box { background: var(--gray-lighter); border: 1px solid var(--border); border-radius: 0; padding: 28px; margin: 24px 0; }
+  .example-box .example-label { font-size: 10px; font-weight: 400; letter-spacing: 3px; color: var(--gray); margin-bottom: 12px; text-transform: uppercase; }
+  .example-box p { font-size: 14px; line-height: 1.8; margin: 0; }
+  .example-box .highlight { color: var(--black); font-weight: 600; }
+  .example-box .dialog { background: var(--card); border: 1px solid var(--border); border-radius: 0; padding: 16px; margin: 12px 0; font-style: italic; color: var(--dark); }
+  .relation-diagram { display: flex; align-items: center; justify-content: center; gap: 0; margin: 40px 0; flex-wrap: wrap; }
+  .relation-box { background: var(--card); border: 1.5px solid var(--black); border-radius: 0; padding: 20px 24px; text-align: center; min-width: 180px; }
+  .relation-box .r-title { font-size: 15px; font-weight: 600; color: var(--black); }
+  .relation-box .r-sub { font-size: 12px; color: var(--text-secondary); margin-top: 4px; }
+  .relation-box.foundation { border-color: var(--black); background: var(--gray-lighter); }
+  .relation-box.cross { border-color: var(--gray); border-style: dashed; }
+  .relation-arrow { font-size: 24px; color: var(--gray); padding: 0 8px; }
+  table { width: 100%; border-collapse: collapse; font-size: 14px; margin: 16px 0; }
+  th { background: var(--gray-lighter); font-weight: 600; text-align: left; padding: 12px 16px; color: var(--dark); }
+  td { padding: 12px 16px; border-bottom: 1px solid var(--border); }
+  .timeline { position: relative; padding-left: 32px; margin: 24px 0; }
+  .timeline::before { content: ''; position: absolute; left: 11px; top: 0; bottom: 0; width: 1px; background: var(--gray-light); }
+  .timeline-item { position: relative; margin-bottom: 32px; }
+  .timeline-item::before { content: ''; position: absolute; left: -25px; top: 6px; width: 10px; height: 10px; border-radius: 50%; background: var(--black); border: 2px solid var(--bg); }
+  .timeline-week { font-size: 10px; font-weight: 400; color: var(--gray); letter-spacing: 3px; text-transform: uppercase; margin-bottom: 6px; }
+  .timeline-title { font-size: 17px; font-weight: 400; color: var(--black); margin-bottom: 8px; letter-spacing: -0.2px; }
+  .timeline-question { font-size: 14px; color: var(--text-secondary); font-style: italic; margin-bottom: 12px; }
+  .proto-tabs { display: flex; gap: 4px; margin-bottom: 24px; }
+  .proto-tab { padding: 10px 24px; border-radius: 0; font-size: 12px; font-weight: 400; cursor: pointer; background: var(--gray-lighter); color: var(--text-secondary); border: 1px solid var(--border); transition: all 0.2s; letter-spacing: 0.5px; }
+  .proto-tab.active { background: var(--black); color: #fff; border-color: var(--black); }
+  .proto-frame { background: var(--card); border: 1px solid var(--border); border-radius: 0; overflow: hidden; }
+  .proto-topbar { background: var(--black); height: 44px; display: flex; align-items: center; padding: 0 20px; }
+  .proto-topbar .logo { color: #fff; font-weight: 400; font-size: 13px; letter-spacing: 4px; text-transform: uppercase; }
+  .proto-topbar .nav-items { margin-left: 24px; display: flex; gap: 16px; }
+  .proto-topbar .nav-item { font-size: 12px; color: rgba(255,255,255,0.5); }
+  .proto-topbar .nav-item.active { color: #fff; }
+  .proto-body { display: flex; min-height: 480px; }
+  .proto-sidebar { width: 220px; border-right: 1px solid var(--border); padding: 16px; background: #FFFFFF; }
+  .proto-main { flex: 1; padding: 20px; }
+  .proto-right { width: 260px; border-left: 1px solid var(--border); padding: 16px; background: var(--gray-lighter); }
+  .client-item { padding: 10px 12px; border-radius: 8px; margin-bottom: 6px; font-size: 13px; display: flex; justify-content: space-between; align-items: center; }
+  .client-item.active { background: var(--black); color: #fff; }
+  .tier { font-size: 10px; padding: 1px 6px; border-radius: 8px; }
+  .tier-vvip { background: var(--black); color: #fff; }
+  .tier-vip { background: #DBEAFE; color: #1E40AF; }
+  .tier-vic { background: #E5E7EB; color: #374151; }
+  .ai-summary { background: var(--gray-lighter); border: 1px solid var(--border); border-radius: 0; padding: 16px; margin-bottom: 16px; }
+  .ai-summary .ai-label { font-size: 10px; font-weight: 400; letter-spacing: 3px; color: var(--gray); margin-bottom: 8px; text-transform: uppercase; }
+  .ai-summary p { font-size: 13px; color: var(--dark); margin: 0; line-height: 1.6; }
+  .profile-tags { display: flex; flex-wrap: wrap; gap: 6px; margin: 12px 0; }
+  .profile-tag { font-size: 11px; padding: 3px 10px; border-radius: 12px; background: #F3F4F6; color: var(--text-secondary); }
+  .moment-item { padding: 16px; border-radius: 0; margin-bottom: 12px; border-left: 2px solid; background: var(--card); }
+  .moment-item.urgent { border-color: var(--red); }
+  .moment-item.medium { border-color: var(--yellow); }
+  .moment-item.low { border-color: var(--green); }
+  .moment-priority { font-size: 10px; font-weight: 700; letter-spacing: 1px; margin-bottom: 4px; }
+  .moment-priority.high { color: var(--red); }
+  .moment-priority.med { color: var(--yellow); }
+  .moment-priority.lo { color: var(--green); }
+  .moment-name { font-size: 15px; font-weight: 400; color: var(--black); margin-bottom: 4px; }
+  .moment-reason { font-size: 12px; color: var(--text-secondary); margin-bottom: 8px; }
+  .moment-action { font-size: 12px; color: var(--dark); background: var(--gray-lighter); padding: 10px; border-radius: 0; line-height: 1.6; border: 1px solid var(--border); }
+  .brand-selector { display: flex; gap: 8px; margin-bottom: 16px; }
+  .brand-btn { padding: 8px 20px; border-radius: 0; font-size: 11px; font-weight: 400; border: 1px solid var(--border); background: var(--card); color: var(--text-secondary); letter-spacing: 1px; }
+  .brand-btn.active { background: var(--black); color: #fff; border-color: var(--black); }
+  .tone-card { background: var(--gray-lighter); border-radius: 0; padding: 16px; margin-bottom: 16px; border: 1px solid var(--border); }
+  .tone-card h4 { font-size: 12px; font-weight: 600; color: var(--dark); margin-bottom: 8px; letter-spacing: 1px; text-transform: uppercase; }
+  .tone-card p { font-size: 12px; color: var(--text-secondary); margin: 0; }
+  .msg-gen { background: var(--card); border: 1px solid var(--border); border-radius: 10px; padding: 16px; }
+  .msg-gen .input-label { font-size: 11px; color: var(--text-secondary); margin-bottom: 6px; }
+  .msg-gen .input-box { background: #F5F5F5; border-radius: 6px; padding: 10px; font-size: 13px; color: var(--text); margin-bottom: 12px; }
+  .msg-gen .output-box { background: var(--gray-lighter); border: 1px solid var(--border); border-radius: 0; padding: 14px; font-size: 13px; color: var(--dark); line-height: 1.7; }
+  .footer { text-align: center; padding: 60px 0 40px; }
+  .summary-line { font-size: 16px; color: var(--dark); font-weight: 500; max-width: 600px; margin: 0 auto; line-height: 1.8; }
+  .mt-4 { margin-top: 32px; }
+  .text-center { text-align: center; }
+  @media (max-width: 768px) {
+    .feature-grid { grid-template-columns: 1fr; }
+    .proto-sidebar, .proto-right { display: none; }
+    .hero h1 { font-size: 28px; }
+    .relation-diagram { flex-direction: column; }
+    .relation-arrow { transform: rotate(90deg); }
+    .stat-row { flex-direction: column; }
+    .journey-pipeline { flex-direction: column; align-items: center; }
+    .journey-step-arrow { transform: rotate(90deg); }
+  }
+
+  /* ─── Stat Cards ─── */
+  .stat-row { display: flex; gap: 16px; margin: 32px 0; }
+  .stat-card { flex: 1; background: var(--card); border: 1px solid var(--border); border-radius: 12px; padding: 24px; text-align: center; position: relative; overflow: hidden; }
+  .stat-card::before { content: ''; position: absolute; top: 0; left: 0; right: 0; height: 2px; background: var(--black); }
+  .stat-card .stat-number { font-size: 42px; font-weight: 200; color: var(--black); line-height: 1; margin-bottom: 6px; letter-spacing: -2px; }
+  .stat-card .stat-unit { font-size: 18px; color: var(--gray); font-weight: 300; }
+  .stat-card .stat-label { font-size: 13px; color: var(--text-secondary); margin-top: 8px; }
+  .stat-card .stat-source { font-size: 10px; color: var(--text-secondary); margin-top: 4px; opacity: 0.7; }
+
+  /* ─── Journey Pipeline ─── */
+  .journey-pipeline { display: flex; align-items: center; justify-content: center; gap: 0; margin: 32px 0; flex-wrap: nowrap; overflow-x: auto; padding: 8px 0; }
+  .journey-step { display: flex; flex-direction: column; align-items: center; min-width: 120px; }
+  .journey-step-icon { width: 56px; height: 56px; border-radius: 50%; background: var(--black); display: flex; align-items: center; justify-content: center; font-size: 22px; margin-bottom: 10px; }
+  .journey-step-label { font-size: 13px; font-weight: 400; color: var(--black); text-align: center; letter-spacing: 0.5px; }
+  .journey-step-sub { font-size: 10px; color: var(--gray); text-align: center; margin-top: 2px; letter-spacing: 1px; text-transform: uppercase; }
+  .journey-step-arrow { font-size: 18px; color: var(--gray-light); padding: 0 6px; margin-bottom: 24px; }
+
+  /* ─── Bar Chart ─── */
+  .bar-chart { margin: 24px 0; }
+  .bar-row { display: flex; align-items: center; margin-bottom: 14px; }
+  .bar-label { width: 200px; font-size: 13px; color: var(--text); flex-shrink: 0; }
+  .bar-track { flex: 1; height: 28px; background: #F3F4F6; border-radius: 14px; overflow: hidden; position: relative; }
+  .bar-fill { height: 100%; border-radius: 0; display: flex; align-items: center; justify-content: flex-end; padding-right: 12px; font-size: 12px; font-weight: 400; color: #fff; transition: width 1s ease; }
+  .bar-fill.navy { background: var(--black); }
+  .bar-fill.gold { background: var(--dark); }
+  .bar-fill.teal { background: var(--gray-dark); }
+
+  /* ─── Flywheel ─── */
+  .flywheel { display: flex; align-items: center; justify-content: center; margin: 32px 0; gap: 0; flex-wrap: wrap; }
+  .flywheel-step { display: flex; flex-direction: column; align-items: center; width: 130px; }
+  .flywheel-circle { width: 64px; height: 64px; border-radius: 50%; display: flex; align-items: center; justify-content: center; font-size: 24px; margin-bottom: 8px; border: 1px solid var(--border); }
+  .flywheel-circle.c1 { background: var(--bg); }
+  .flywheel-circle.c2 { background: var(--bg); }
+  .flywheel-circle.c3 { background: var(--bg); }
+  .flywheel-circle.c4 { background: var(--bg); }
+  .flywheel-circle.c5 { background: var(--bg); }
+  .flywheel-label { font-size: 11px; font-weight: 400; color: var(--dark); text-align: center; }
+  .flywheel-arrow { font-size: 16px; color: var(--gray-light); padding: 0 4px; margin-bottom: 20px; }
+
+  /* ─── SVG Relationship ─── */
+  .svg-relation { margin: 40px auto; max-width: 700px; }
+  .svg-relation svg { width: 100%; height: auto; }
+
+  /* ─── Arch Icons ─── */
+  .arch-item-icon { font-size: 20px; margin-bottom: 4px; }
+
+  /* ─── Section Divider ─── */
+  .section-divider { width: 40px; height: 1px; background: var(--black); margin: 0 0 32px; }
+
+  /* ─── Insight Callout ─── */
+  .insight-callout { background: var(--gray-lighter); border: 1px solid var(--border); border-radius: 0; padding: 20px 24px; margin: 24px 0; display: flex; align-items: flex-start; gap: 16px; border-left: 2px solid var(--black); }
+  .insight-callout .insight-icon { font-size: 20px; flex-shrink: 0; }
+  .insight-callout .insight-text { font-size: 13px; color: var(--dark); line-height: 1.7; }
+
+  /* ─── Summary Section ─── */
+  .summary-section { background: var(--black); border-radius: 0; padding: 56px 40px; text-align: center; margin: 40px 0; }
+  .summary-section .summary-line { color: rgba(255,255,255,0.9); font-size: 17px; line-height: 2.2; font-weight: 300; letter-spacing: 0.3px; }
+  .summary-section .summary-divider { width: 40px; height: 1px; background: #fff; margin: 28px auto; }
+  .summary-section .summary-cta { color: #fff; font-size: 11px; font-weight: 400; letter-spacing: 5px; text-transform: uppercase; margin-top: 16px; }
+</style>
+</head>
+<body>
+
+<nav class="nav">
+  <div class="brand">KERING × AI</div>
+  <div class="links">
+    <a href="#top">首页</a>
+    <a href="#journey">旅程地图</a>
+    <a href="#architecture">架构设计</a>
+    <a href="#solutions">方案设计</a>
+    <a href="#prototypes">产品原型</a>
+    <a href="#plan">行动计划</a>
+  </div>
+</nav>
+
+<!-- HERO -->
+<section id="top" class="hero">
+  <div class="container">
+    <div class="section-label">AI Clienteling 产品方案</div>
+    <h1>让"遇到了好SA"不再是运气，<br>而是品牌的能力</h1>
+    <p class="lead">奢侈品零售的核心是人与人的连接。AI要做的，是在客户端增强人情的温度，而不是取代人；在SA端将散落在个人经验中的客户知识显性化、组织化。</p>
+    <div class="framework">机会在哪里 <span>→</span> 产品怎么做 <span>→</span> 如何落地</div>
+
+    <!-- Industry Data Stats -->
+    <div class="stat-row" style="margin-top:48px;">
+      <div class="stat-card">
+        <div class="stat-number">53<span class="stat-unit">%</span></div>
+        <div class="stat-label">奢侈品高管将 Clienteling<br>列为AI第一优先级</div>
+        <div class="stat-source">BCG 2024</div>
+      </div>
+      <div class="stat-card">
+        <div class="stat-number">90<span class="stat-unit">%</span></div>
+        <div class="stat-label">高管认为AI定制化服务<br>是品牌刚需</div>
+        <div class="stat-source">Kearney 2024</div>
+      </div>
+      <div class="stat-card">
+        <div class="stat-number">3-5<span class="stat-unit">×</span></div>
+        <div class="stat-label">AI赋能SA沟通后<br>转化率提升</div>
+        <div class="stat-source">Artefact 中国市场</div>
+      </div>
+      <div class="stat-card">
+        <div class="stat-number">4<span class="stat-unit">万+</span></div>
+        <div class="stat-label">LVMH MaIA平台<br>服务SA数量</div>
+        <div class="stat-source">LVMH 2024</div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- 二、客户旅程地图 -->
+<section id="journey">
+  <div class="container">
+    <div class="section-label">Part 01</div>
+    <h2>客户旅程中的AI机会</h2>
+    <p class="lead">横向6个阶段，纵向Client / SA双视角——每一个交叉点都是AI创造价值的机会。</p>
+
+    <div class="journey-scroll">
+      <table class="journey-table">
+        <thead>
+          <tr>
+            <th></th>
+            <th style="width:70px;"></th>
+            <th><div class="th-icon">👁️</div><span class="th-name">认知</span><span class="th-en">Awareness</span></th>
+            <th><div class="th-icon">🔍</div><span class="th-name">探索</span><span class="th-en">Exploration</span></th>
+            <th><div class="th-icon">🏬</div><span class="th-name">到店体验</span><span class="th-en">In-Store</span></th>
+            <th><div class="th-icon">💎</div><span class="th-name">购买决策</span><span class="th-en">Purchase</span></th>
+            <th><div class="th-icon">🤝</div><span class="th-name">购后关系</span><span class="th-en">After-Sales</span></th>
+            <th><div class="th-icon">♾️</div><span class="th-name">忠诚/复购</span><span class="th-en">Loyalty</span></th>
+          </tr>
+        </thead>
+        <tbody>
+          <!-- Client 痛点 -->
+          <tr>
+            <td rowspan="3" class="group-label-cell">Client</td>
+            <td><span class="sub-tag pain">痛点</span></td>
+            <td>品牌发现依赖传统渠道</td>
+            <td>线上线下断裂，偏好门店不可见</td>
+            <td>服务质量"看运气"</td>
+            <td>推荐范围受限于SA个人认知</td>
+            <td>购后无人跟进</td>
+            <td>关系绑在个人身上</td>
+          </tr>
+          <!-- Client 爽点 -->
+          <tr>
+            <td><span class="sub-tag gain">爽点</span></td>
+            <td>AI购物助手精准推荐<br><span style="font-size:11px;color:var(--gray)">GEO</span></td>
+            <td>下次到店时SA已了解偏好</td>
+            <td>到店前AI已准备好画像</td>
+            <td>AI推荐最匹配的产品组合</td>
+            <td>AI识别关键时刻自动关怀</td>
+            <td>每次到店SA都"懂你"</td>
+          </tr>
+          <!-- Client 效率 -->
+          <tr>
+            <td><span class="sub-tag efficiency">效率</span></td>
+            <td>—</td>
+            <td>线上咨询响应更及时</td>
+            <td>AI实时推荐搭配</td>
+            <td>快速回答替代款问题</td>
+            <td>AI辅助回复保养问题</td>
+            <td>AI预测流失风险</td>
+          </tr>
+          <!-- SA 痛点 -->
+          <tr>
+            <td rowspan="3" class="group-label-cell">SA</td>
+            <td><span class="sub-tag pain">痛点</span></td>
+            <td>无法识别高潜客户</td>
+            <td>不知道客户到店前看了什么</td>
+            <td>靠记忆判断偏好</td>
+            <td>对全品类库存了解有限</td>
+            <td>跟进无体系</td>
+            <td>客户知识随离职流失</td>
+          </tr>
+          <!-- SA 爽点 -->
+          <tr>
+            <td><span class="sub-tag gain">爽点</span></td>
+            <td>—</td>
+            <td>AI生成"到店前简报"</td>
+            <td>平板上打开客户360画像</td>
+            <td>AI推荐最佳产品组合</td>
+            <td>AI自动生成跟进话术</td>
+            <td>客户历史沉淀在系统中</td>
+          </tr>
+          <!-- SA 效率 -->
+          <tr>
+            <td><span class="sub-tag efficiency">效率</span></td>
+            <td>AI识别高潜客户画像</td>
+            <td>AI预判到店需求</td>
+            <td>AI根据试穿实时推荐</td>
+            <td>快速查询跨品类库存</td>
+            <td>AI提醒跟进时间节点</td>
+            <td>跨品牌客户统一视图</td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+
+    <!-- 方案选型：优先级总结 -->
+    <div style="margin-top:40px;">
+      <h3 style="font-size:18px;font-weight:400;margin-bottom:16px;">机会聚焦</h3>
+      <p style="font-size:13px;color:var(--text-secondary);margin-bottom:20px;">旅程地图揭示了6个阶段的AI机会，但不是所有机会都适合作为MVP切入点。我们基于三个维度筛选优先级：</p>
+      <table class="tech-table" style="margin-bottom:24px;">
+        <tr><th style="width:140px;">维度</th><th>说明</th></tr>
+        <tr><td>客户影响</td><td>是否直接影响客户体验的关键时刻？</td></tr>
+        <tr><td>SA痛点强度</td><td>当前SA在此环节的“信息缺失”或“效率损失”有多严重？</td></tr>
+        <tr><td>数据就绪度</td><td>集团现有数据能否支撑快速落地？</td></tr>
+      </table>
+
+      <h4 style="font-size:14px;font-weight:400;margin-bottom:12px;">Top 3 优先级</h4>
+      <table class="tech-table" style="margin-bottom:16px;">
+        <tr><th>优先级</th><th>旅程阶段</th><th>对应方案</th><th>选取理由</th></tr>
+        <tr><td>⭐⭐⭐</td><td>到店体验</td><td><strong>Client 360 — AI客户画像</strong></td><td>客户影响最大、SA痛点最强的关键时刻；SA打开画像即可“读懂客户”，是所有后续能力的数据基础</td></tr>
+        <tr><td>⭐⭐⭐</td><td>忠诚/复购</td><td><strong>Smart Moments — 关键时刻引擎</strong></td><td>防止客户流失、促进复购的核心驱动力；将被动等待转化为主动行动</td></tr>
+        <tr><td>⭐⭐</td><td>贯穿旅程</td><td><strong>品牌沟通助手 — 品牌调性内容生成</strong></td><td>体系化跟进替代“看SA心情”；数据依赖低、见效快，可快速建立信任</td></tr>
+      </table>
+      <p style="font-size:13px;color:var(--text-secondary);">三个方案分别解决SA的三个核心问题：<strong>客户是谁、何时行动、怎么沟通</strong>。</p>
+    </div>
+  </div>
+</section>
+
+<!-- 三、架构设计 -->
+<section id="architecture">
+  <div class="container">
+    <div class="section-label">Part 02</div>
+    <h2>企业级AI架构设计</h2>
+    <p class="lead">集团建能力，品牌建体验。</p>
+
+    <!-- Layer 4: 应用层 (TOP) -->
+    <div class="arch-layer-v2 arch-app">
+      <div class="arch-layer-header">
+        <div class="arch-layer-num">4</div>
+        <div>
+          <div class="arch-layer-title">应用层</div>
+          <div class="arch-layer-subtitle">业务价值交付 + 多品牌隔离</div>
+        </div>
+      </div>
+      <div class="arch-app-grid">
+        <div class="arch-app-card">
+          <div class="arch-app-icon">&#128100;</div>
+          <div class="arch-app-name">Client 360</div>
+          <div class="arch-app-desc">客户画像</div>
+        </div>
+        <div class="arch-app-card">
+          <div class="arch-app-icon">&#9889;</div>
+          <div class="arch-app-name">Smart Moments</div>
+          <div class="arch-app-desc">关键时刻</div>
+        </div>
+        <div class="arch-app-card">
+          <div class="arch-app-icon">&#127919;</div>
+          <div class="arch-app-name">智能推荐</div>
+          <div class="arch-app-desc">产品推荐</div>
+        </div>
+        <div class="arch-app-card">
+          <div class="arch-app-icon">&#128172;</div>
+          <div class="arch-app-name">品牌沟通助手</div>
+          <div class="arch-app-desc">内容生成</div>
+        </div>
+      </div>
+      <!-- 品牌配置层（子层） -->
+      <div class="arch-brand-sub">
+        <div class="arch-brand-sub-label">品牌配置层（子层）</div>
+        <div class="arch-brand-grid">
+          <div class="arch-brand-card">
+            <div class="arch-brand-name">Gucci</div>
+            <div class="arch-brand-items">调性 &middot; 数据域 &middot; 知识库</div>
+          </div>
+          <div class="arch-brand-card">
+            <div class="arch-brand-name">Bottega Veneta</div>
+            <div class="arch-brand-items">调性 &middot; 数据域 &middot; 知识库</div>
+          </div>
+          <div class="arch-brand-card">
+            <div class="arch-brand-name">Saint Laurent</div>
+            <div class="arch-brand-items">调性 &middot; 数据域 &middot; 知识库</div>
+          </div>
+          <div class="arch-brand-card arch-brand-more">&middot;&middot;&middot;</div>
+        </div>
+      </div>
+    </div>
+
+    <div class="arch-arrow">&#8593;</div>
+
+    <!-- Layer 3: 智能体层 -->
+    <div class="arch-layer-v2 arch-agent">
+      <div class="arch-layer-header">
+        <div class="arch-layer-num">3</div>
+        <div>
+          <div class="arch-layer-title">智能体层</div>
+          <div class="arch-layer-subtitle">任务规划与执行</div>
+        </div>
+      </div>
+      <!-- Orchestration Agent -->
+      <div class="arch-orch-card">
+        <div class="arch-orch-icon">&#129517;</div>
+        <div>
+          <div class="arch-orch-name">Orchestration Agent</div>
+          <div class="arch-orch-desc">任务编排 &middot; 路由分发 &middot; 多Agent协调 &middot; 冲突解决</div>
+        </div>
+      </div>
+      <!-- Three Agents -->
+      <div class="arch-layer-content">
+        <div class="arch-agent-card">
+          <div class="arch-agent-icon">&#128100;</div>
+          <div class="arch-agent-name">Client Agent</div>
+          <div class="arch-agent-desc">客户画像理解</div>
+          <div class="arch-agent-skills">
+            <span class="arch-skill">偏好提取</span>
+            <span class="arch-skill">生命周期判断</span>
+            <span class="arch-skill">流失风险预测</span>
+          </div>
+        </div>
+        <div class="arch-agent-card">
+          <div class="arch-agent-icon">&#9201;</div>
+          <div class="arch-agent-name">Moment Agent</div>
+          <div class="arch-agent-desc">时机洞察引擎</div>
+          <div class="arch-agent-skills">
+            <span class="arch-skill">触发条件检测</span>
+            <span class="arch-skill">优先级排序</span>
+            <span class="arch-skill">行动建议生成</span>
+          </div>
+        </div>
+        <div class="arch-agent-card">
+          <div class="arch-agent-icon">&#9997;</div>
+          <div class="arch-agent-name">Voice Agent</div>
+          <div class="arch-agent-desc">品牌内容生成</div>
+          <div class="arch-agent-skills">
+            <span class="arch-skill">调性检查</span>
+            <span class="arch-skill">话术生成</span>
+            <span class="arch-skill">多语言适配</span>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div class="arch-arrow">&#8593;</div>
+
+    <!-- Layer 2: AI能力层 -->
+    <div class="arch-layer-v2 arch-ai-cap">
+      <div class="arch-layer-header">
+        <div class="arch-layer-num">2</div>
+        <div>
+          <div class="arch-layer-title">AI 能力层</div>
+          <div class="arch-layer-subtitle">知识理解与增强</div>
+        </div>
+      </div>
+      <div class="arch-layer-content">
+        <div class="arch-subgroup">
+          <div class="arch-subgroup-label">Context Engineering</div>
+          <div class="arch-subgroup-desc">让 AI "看得更全、想得更准"</div>
+          <div class="arch-components">
+            <div class="arch-comp">上下文构建<br><span class="arch-comp-sub">结构化/分层</span></div>
+            <div class="arch-comp">上下文压缩<br><span class="arch-comp-sub">精简/摘要</span></div>
+            <div class="arch-comp">上下文化路由<br><span class="arch-comp-sub">选择最相关信息</span></div>
+            <div class="arch-comp">记忆管理<br><span class="arch-comp-sub">短期/长期/语义记忆</span></div>
+          </div>
+        </div>
+        <div class="arch-subgroup">
+          <div class="arch-subgroup-label">RAG 2.0</div>
+          <div class="arch-subgroup-desc">从"检索+拼接"升级为"理解+增强"</div>
+          <div class="arch-components">
+            <div class="arch-comp">查询理解<br><span class="arch-comp-sub">Query Rewrite</span></div>
+            <div class="arch-comp">多路检索<br><span class="arch-comp-sub">Multi-step Retrieval</span></div>
+            <div class="arch-comp">重排序<br><span class="arch-comp-sub">Rerank</span></div>
+            <div class="arch-comp">上下文增强<br><span class="arch-comp-sub">Context Augment</span></div>
+            <div class="arch-comp">生成<br><span class="arch-comp-sub">Generate</span></div>
+          </div>
+        </div>
+        <div class="arch-subgroup">
+          <div class="arch-subgroup-label">MCP / Tool Layer</div>
+          <div class="arch-subgroup-desc">连接 AI 与真实世界</div>
+          <div class="arch-components">
+            <div class="arch-comp">企业系统连接<br><span class="arch-comp-sub">ERP / CRM / OA / IM</span></div>
+            <div class="arch-comp">API 网关<br><span class="arch-comp-sub">Webhook / 消息队列</span></div>
+            <div class="arch-comp">集成能力<br><span class="arch-comp-sub">单事件驱动 / 数据同步</span></div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div class="arch-arrow">&#8593;</div>
+
+    <!-- Layer 1: 模型与基础设施层 -->
+    <div class="arch-layer-v2 arch-model">
+      <div class="arch-layer-header">
+        <div class="arch-layer-num">1</div>
+        <div>
+          <div class="arch-layer-title">模型与基础设施层</div>
+          <div class="arch-layer-subtitle">模型能力与系统保障</div>
+        </div>
+      </div>
+      <div class="arch-layer-content">
+        <div class="arch-subgroup">
+          <div class="arch-subgroup-label">LLM Gateway</div>
+          <div class="arch-components">
+            <div class="arch-comp">多模型路由<br><span class="arch-comp-sub">按任务/成本/效果</span></div>
+            <div class="arch-comp">负载均衡 &amp; 熔断<br><span class="arch-comp-sub">高可用保障</span></div>
+            <div class="arch-comp">成本控制 &amp; 限流<br><span class="arch-comp-sub">Prompt/Embedding缓存</span></div>
+          </div>
+        </div>
+        <div class="arch-subgroup">
+          <div class="arch-subgroup-label">模型生态</div>
+          <div class="arch-components">
+            <div class="arch-comp-icon">GPT-4o / o3</div>
+            <div class="arch-comp-icon">Claude 3.7</div>
+            <div class="arch-comp-icon">Gemini 2.0</div>
+            <div class="arch-comp-icon">Qwen</div>
+            <div class="arch-comp-icon">DeepSeek R1</div>
+          </div>
+        </div>
+        <div class="arch-subgroup">
+          <div class="arch-subgroup-label">基础设施</div>
+          <div class="arch-components">
+            <div class="arch-comp">向量数据库<br><span class="arch-comp-sub">Milvus / Pinecone</span></div>
+            <div class="arch-comp">缓存层<br><span class="arch-comp-sub">Redis</span></div>
+            <div class="arch-comp">对象存储<br><span class="arch-comp-sub">客户画像/文档</span></div>
+            <div class="arch-comp">监控 &amp; 日志<br><span class="arch-comp-sub">Prometheus / Grafana</span></div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div class="arch-arrow">&#8593;</div>
+
+    <!-- Layer 0: 关键能力支撑 (BOTTOM) -->
+    <div class="arch-layer-v2 arch-cross">
+      <div class="arch-layer-header">
+        <div class="arch-layer-num" style="background:#fff;color:#000;">0</div>
+        <div>
+          <div class="arch-layer-title" style="color:#fff;">关键能力支撑</div>
+          <div class="arch-layer-subtitle">横切能力 &middot; 贯穿所有层</div>
+        </div>
+      </div>
+      <div class="arch-cross-items">
+        <div class="arch-cross-item">
+          <div class="arch-cross-name">&#128737;&#65039; 数据治理</div>
+          <div class="arch-cross-sub">&middot; 数据质量<br>&middot; 数据安全<br>&middot; 元数据管理</div>
+        </div>
+        <div class="arch-cross-item">
+          <div class="arch-cross-name">&#128202; 评估体系 (Eval)</div>
+          <div class="arch-cross-sub">&middot; 离线评估<br>&middot; 在线评估<br>&middot; 效果监控</div>
+        </div>
+        <div class="arch-cross-item">
+          <div class="arch-cross-name">&#128221; Prompt &amp; 模板管理</div>
+          <div class="arch-cross-sub">&middot; 提示词版本管理<br>&middot; 模板复用<br>&middot; A/B 测试</div>
+        </div>
+        <div class="arch-cross-item">
+          <div class="arch-cross-name">&#128200; 观测与监控 (Observability)</div>
+          <div class="arch-cross-sub">&middot; 链路追踪 (Tracing)<br>&middot; 指标监控 (Metrics)<br>&middot; 日志分析</div>
+        </div>
+        <div class="arch-cross-item">
+          <div class="arch-cross-name">&#128176; 成本管理 (FinOps)</div>
+          <div class="arch-cross-sub">&middot; 模型成本分析<br>&middot; 资源成本分析<br>&middot; 预算与告警</div>
+        </div>
+      </div>
+    </div>
+
+    <!-- 设计说明 -->
+    <div class="arch-design-notes">
+      <div class="arch-design-notes-title">设计说明</div>
+      <div class="arch-design-notes-text">
+        &middot; <strong>Layer 0（关键能力支撑）</strong>&mdash; 数据治理、Eval评估、FinOps等横切能力贯穿所有层，确保AI系统好用、可控、可规模化。<br>
+        &middot; <strong>Layer 1（模型与基础设施层）</strong>&mdash; LLM Gateway统一接入多模型，向量数据库与缓存层提供AI运行的基础设施保障。<br>
+        &middot; <strong>Layer 2（AI能力层）</strong>&mdash; Context Engineering、RAG 2.0、MCP工具层三大原子能力，让AI看得更全、检索更准、连接真实世界。<br>
+        &middot; <strong>Layer 3（智能体层）</strong>&mdash; Orchestration Agent统一编排Client/Moment/Voice三个专用Agent，实现从单点工具到多Agent协同的跃迁。<br>
+        &middot; <strong>Layer 4（应用层）</strong>&mdash; 四个应用交付业务价值，品牌配置层实现一套AI系统服务12个品牌的调性与数据隔离。
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- 四、重点方案详设 -->
+<section id="solutions">
+  <div class="container">
+    <div class="section-label">Part 03</div>
+    <h2>重点方案详设</h2>
+    <p class="lead">从旅程地图中选出三个最高优先级的方案，层层递进：知道客户是谁 → 知道怎么说 → 知道何时行动。</p>
+
+    <!-- ═══ 方案一：Client 360 ═══ -->
+    <div class="solution-header">
+      <div class="solution-num">01</div>
+      <div class="solution-title">Client 360 — AI客户画像</div>
+    </div>
+    <p class="solution-subtitle">将散落在CRM、企微、门店系统中的客户信息，整合为一张SA可理解的360度画像。</p>
+
+    <div class="solution-brief">
+      <div class="solution-brief-item"><strong>用户</strong>门店SA、品牌客户经理</div>
+      <div class="solution-brief-item"><strong>场景一：客户标签</strong>从多源数据中自动提取客户偏好标签（风格、品类、价格带、颜色），替代SA手动打标</div>
+      <div class="solution-brief-item"><strong>场景二：接待前画像摘要</strong>客户到店前，系统自动生成"这个人是谁"的自然语言摘要，SA花30秒掌握全貌</div>
+      <div class="solution-brief-item"><strong>场景三：接待中实时查阅</strong>SA通过自然语言快速查询客户偏好与历史（"她上次买了什么？"），秒级返回精准答案</div>
+    </div>
+
+    <div class="tech-deep-dive">
+      <div class="tech-deep-title">AI技术方案</div>
+
+      <!-- 场景一：客户标签 -->
+      <div class="tech-subsection">
+        <div class="tech-subtitle">场景一：客户标签 — AI工作流</div>
+        <div class="tech-pipeline">
+          <div class="tech-pipe-step">多源数据接入<br><span>CRM / 企微 / 门店POS / 客服记录</span></div>
+          <div class="tech-pipe-arrow">→</div>
+          <div class="tech-pipe-step">AI偏好信息提取<br><span>品牌/品类/风格/颜色识别 + 意图分类</span></div>
+          <div class="tech-pipe-arrow">→</div>
+          <div class="tech-pipe-step">标签生成<br><span>LLM归纳为结构化标签</span></div>
+          <div class="tech-pipe-arrow">→</div>
+          <div class="tech-pipe-step">置信度评估<br><span>高/中/低分档输出</span></div>
+          <div class="tech-pipe-arrow">→</div>
+          <div class="tech-pipe-step">标签入库<br><span>客户画像数据库</span></div>
+        </div>
+        <div class="feature-grid" style="margin-top:12px;">
+          <div class="feature-card">
+            <h4>技术要点</h4>
+            <p>• 标签体系分层：一级（品类）→ 二级（具体产品）→ 三级（属性：颜色/材质/风格）<br>• 同一标签多源交叉验证：企微提到 + 购买记录 = 高置信度</p>
+          </div>
+          <div class="feature-card">
+            <h4>指标与评测</h4>
+            <p>• <strong>标签提取F1-score ≥ 0.80</strong>：人工标注100条对话，对比AI提取结果<br>• <strong>标签覆盖率 ≥ 70%</strong>：活跃客户有≥5个标签<br>• <strong>SA标签采纳率 ≥ 60%</strong>：确认数 / 总处理数</p>
+          </div>
+        </div>
+      </div>
+
+      <!-- 场景二：接待前画像摘要 -->
+      <div class="tech-subsection">
+        <div class="tech-subtitle">场景二：接待前画像摘要 — AI工作流</div>
+        <div class="tech-pipeline">
+          <div class="tech-pipe-step">客户ID触发<br><span>预约/排班系统</span></div>
+          <div class="tech-pipe-arrow">→</div>
+          <div class="tech-pipe-step">RAG多路检索<br><span>向量 + 关键词匹配 + 时间衰减</span></div>
+          <div class="tech-pipe-arrow">→</div>
+          <div class="tech-pipe-step">交叉编码器精排<br><span>re-rank</span></div>
+          <div class="tech-pipe-arrow">→</div>
+          <div class="tech-pipe-step">LLM摘要生成<br><span>结构化Prompt约束</span></div>
+          <div class="tech-pipe-arrow">→</div>
+          <div class="tech-pipe-step">幻觉检测<br><span>逐句追溯原始记录</span></div>
+          <div class="tech-pipe-arrow">→</div>
+          <div class="tech-pipe-step">SA端展示<br><span>平板/手机</span></div>
+        </div>
+        <div class="feature-grid" style="margin-top:12px;">
+          <div class="feature-card">
+            <h4>技术要点</h4>
+            <p>• 检索策略：向量相似度（语义匹配）+ 关键词精确匹配（品牌/品类名）+ 时间衰减（近期权重高）<br>• Chunk按对话轮次切分，保留上下文完整性，每chunk附时间戳+来源元数据<br>• 摘要Prompt结构化约束：必须包含近期购买、偏好风格、重要个人事件、待跟进事项<br>• 幻觉防护：每个事实点必须可追溯到原始记录，无法追溯的标注"待确认"</p>
+          </div>
+          <div class="feature-card">
+            <h4>指标与评测</h4>
+            <p>• <strong>RAG Recall@10 ≥ 0.90</strong>：关键信息是否在前10条检索结果中<br>• <strong>摘要人工评分 ≥ 4.0/5.0</strong>：SA盲评完整性、准确性、可读性<br>• <strong>幻觉率 ≤ 5%</strong>：逐句追溯<br>• <strong>SA阅读完成率 ≥ 80%</strong>：打开后停留 ≥ 15秒</p>
+          </div>
+        </div>
+      </div>
+
+      <!-- 场景三：接待中实时查阅 -->
+      <div class="tech-subsection">
+        <div class="tech-subtitle">场景三：接待中实时查阅 — AI工作流</div>
+        <div class="tech-pipeline">
+          <div class="tech-pipe-step">SA语音/文字提问<br><span>平板输入</span></div>
+          <div class="tech-pipe-arrow">→</div>
+          <div class="tech-pipe-step">意图理解+查询改写<br><span>Query Rewrite</span></div>
+          <div class="tech-pipe-arrow">→</div>
+          <div class="tech-pipe-step">向量检索+过滤<br><span>品牌/品类过滤</span></div>
+          <div class="tech-pipe-arrow">→</div>
+          <div class="tech-pipe-step">答案生成+引用标注<br><span>LLM + 溯源</span></div>
+          <div class="tech-pipe-arrow">→</div>
+          <div class="tech-pipe-step">实时返回<br><span>P95 &lt; 2s</span></div>
+        </div>
+        <div class="feature-grid" style="margin-top:12px;">
+          <div class="feature-card">
+            <h4>技术要点</h4>
+            <p>• 查询改写：将SA口语化提问转为结构化查询（"她喜欢什么颜色" → 检索偏好标签中的颜色字段）<br>• 支持多轮追问，继承上一轮客户身份<br>• 延迟约束：端到端 &lt; 2秒（检索 &lt; 500ms + LLM生成 &lt; 1s），需流式输出<br>• 降级策略：检索失败时返回客户基础标签页；LLM超时返回检索原文片段</p>
+          </div>
+          <div class="feature-card">
+            <h4>指标与评测</h4>
+            <p>• <strong>端到端延迟 P95 &lt; 2s</strong>：生产环境监控<br>• <strong>答案准确率 ≥ 85%</strong>：SA点"有用/无用"反馈<br>• <strong>查询成功率 ≥ 90%</strong>：返回有效答案的占比<br>• <strong>SA日均查询次数 ≥ 3次/人</strong>：反映实际使用频率</p>
+          </div>
+        </div>
+      </div>
+
+      <!-- 共享底座 -->
+      <div class="tech-subsection">
+        <div class="tech-subtitle">三个场景的共享底座</div>
+        <table class="tech-table">
+          <tr><th>共享能力</th><th>说明</th></tr>
+          <tr><td>置信度分级</td><td>高（&gt;0.85）直接展示 / 中（0.6-0.85）标注"AI建议"，SA可修正 / 低（&lt;0.6）不展示，仅记录</td></tr>
+          <tr><td>数据飞轮</td><td>SA修正标签/答案 → 反馈回流 → 模型微调 → 下次更准 → SA更信任 → 更多使用 → 更多数据</td></tr>
+          <tr><td>品牌数据隔离</td><td>Gucci的SA只能看到Gucci客户数据；集团层仅保留跨品牌聚合视图（需授权）</td></tr>
+        </table>
+      </div>
+    </div>
+
+    <!-- ═══ 方案二：品牌沟通助手 ═══ -->
+    <div class="solution-header" style="margin-top:48px;">
+      <div class="solution-num">02</div>
+      <div class="solution-title">品牌沟通助手 — 品牌调性内容生成</div>
+    </div>
+    <p class="solution-subtitle">让SA的每一次触达都带着品牌温度，而不是群发模板。</p>
+
+    <div class="solution-brief">
+      <div class="solution-brief-item"><strong>用户</strong>门店SA、品牌CRM运营</div>
+      <div class="solution-brief-item"><strong>场景一：节日/生日关怀</strong>节日、生日、纪念日到来时，AI结合客户画像和品牌调性自动生成个性化祝福，替代群发模板</div>
+      <div class="solution-brief-item"><strong>场景二：新品推荐文案</strong>新品上架时，AI结合客户偏好和产品卖点生成个性化推荐话术，帮SA精准种草</div>
+      <div class="solution-brief-item"><strong>场景三：购后关怀内容</strong>购买后按时间节点自动生成差异化关怀——第3天保养建议、第14天体验回访、第30天搭配推荐</div>
+    </div>
+
+    <div class="tech-deep-dive">
+      <div class="tech-deep-title">AI技术方案</div>
+
+      <!-- 场景一：节日/生日关怀内容生成 -->
+      <div class="tech-subsection">
+        <div class="tech-subtitle">场景一：节日/生日关怀内容生成 — AI工作流</div>
+        <div class="tech-pipeline">
+          <div class="tech-pipe-step">日历事件触发<br><span>节日/生日/纪念日</span></div>
+          <div class="tech-pipe-arrow">→</div>
+          <div class="tech-pipe-step">拉取客户画像<br><span>偏好/近期购买/个人事件</span></div>
+          <div class="tech-pipe-arrow">→</div>
+          <div class="tech-pipe-step">品牌调性Prompt注入<br><span>风格/语气/禁用词/长度</span></div>
+          <div class="tech-pipe-arrow">→</div>
+          <div class="tech-pipe-step">LLM生成2-3个版本<br><span>多版本输出</span></div>
+          <div class="tech-pipe-arrow">→</div>
+          <div class="tech-pipe-step">品牌调性校验<br><span>一致性打分</span></div>
+          <div class="tech-pipe-arrow">→</div>
+          <div class="tech-pipe-step">SA端展示<br><span>可选/可改/可发</span></div>
+        </div>
+        <div class="feature-grid" style="margin-top:12px;">
+          <div class="feature-card">
+            <h4>技术要点</h4>
+            <p>• 品牌调性结构化注入：每个品牌维护独立System Prompt，含语气风格、称呼习惯、禁用词列表、长度约束、emoji规则<br>• 客户画像融合：将Client 360的偏好标签注入Prompt，让内容从"亲爱的客户"变成"王姐，上次您说想找一款适合日常通勤的包"<br>• 多版本输出：每次生成2-3个版本供SA选择，降低单版本不满意的风险<br>• 置信度分级：高置信度（品牌匹配度>0.9）直接可用；低置信度标注"建议SA审核后发送"</p>
+          </div>
+          <div class="feature-card">
+            <h4>指标与评测</h4>
+            <p>• <strong>品牌调性一致性评分 ≥ 4.0/5.0</strong>：LLM-as-Judge评估生成内容是否符合品牌调性标准<br>• <strong>SA直接采纳率 ≥ 50%</strong>：生成内容无需修改直接发送的比例<br>• <strong>客户回复率提升 ≥ 20%</strong>：对比AI生成 vs 群发模板的客户回复率差异</p>
+          </div>
+        </div>
+      </div>
+
+      <!-- 场景二：新品推荐文案 -->
+      <div class="tech-subsection">
+        <div class="tech-subtitle">场景二：新品推荐文案 — AI工作流</div>
+        <div class="tech-pipeline">
+          <div class="tech-pipe-step">新品入库触发<br><span>产品上架系统</span></div>
+          <div class="tech-pipe-arrow">→</div>
+          <div class="tech-pipe-step">AI提取产品卖点<br><span>材质/工艺/设计亮点</span></div>
+          <div class="tech-pipe-arrow">→</div>
+          <div class="tech-pipe-step">RAG检索匹配客户画像<br><span>偏好/历史购买/价格带</span></div>
+          <div class="tech-pipe-arrow">→</div>
+          <div class="tech-pipe-step">生成推荐文案<br><span>产品卖点 × 客户匹配点</span></div>
+          <div class="tech-pipe-arrow">→</div>
+          <div class="tech-pipe-step">品牌调性校验<br><span>一致性检查</span></div>
+          <div class="tech-pipe-arrow">→</div>
+          <div class="tech-pipe-step">输出2-3个版本<br><span>不同切入角度</span></div>
+        </div>
+        <div class="feature-grid" style="margin-top:12px;">
+          <div class="feature-card">
+            <h4>技术要点</h4>
+            <p>• 产品卖点提取：用LLM从产品描述中提取核心卖点（材质、工艺、设计灵感），结构化存储<br>• 客户-产品匹配：RAG检索客户画像偏好标签，找到新品与客户的具体匹配点（"她喜欢编织工艺" + "新品是编织系列" = 高匹配）<br>• 场景化表达：Prompt约束不允许堆砌产品参数，必须用品牌叙事方式表达<br>• 多版本多角度：每个推荐生成2-3个版本（功能角度/情感角度/搭配角度），SA选择最合适的</p>
+          </div>
+          <div class="feature-card">
+            <h4>指标与评测</h4>
+            <p>• <strong>推荐文案采纳率 ≥ 40%</strong>：SA使用AI生成文案（含修改后使用）的比例<br>• <strong>客户对新品推荐的响应率 ≥ 15%</strong>：收到推荐后回复/到店试穿的比例<br>• <strong>品牌调性一致性 ≥ 4.0/5.0</strong>：LLM-as-Judge评估</p>
+          </div>
+        </div>
+      </div>
+
+      <!-- 场景三：购后关怀内容 -->
+      <div class="tech-subsection">
+        <div class="tech-subtitle">场景三：购后关怀内容 — AI工作流</div>
+        <div class="tech-pipeline">
+          <div class="tech-pipe-step">订单完成触发<br><span>POS/电商系统</span></div>
+          <div class="tech-pipe-arrow">→</div>
+          <div class="tech-pipe-step">提取订单信息<br><span>产品/品类/价格</span></div>
+          <div class="tech-pipe-arrow">→</div>
+          <div class="tech-pipe-step">判断所处阶段<br><span>第3天/第14天/第30天</span></div>
+          <div class="tech-pipe-arrow">→</div>
+          <div class="tech-pipe-step">RAG检索产品知识<br><span>保养知识/搭配推荐</span></div>
+          <div class="tech-pipe-arrow">→</div>
+          <div class="tech-pipe-step">LLM生成关怀内容<br><span>阶段化差异内容</span></div>
+          <div class="tech-pipe-arrow">→</div>
+          <div class="tech-pipe-step">事实核查 + SA推送<br><span>保养建议准确性 → 企微发送</span></div>
+        </div>
+        <div class="feature-grid" style="margin-top:12px;">
+          <div class="feature-card">
+            <h4>技术要点</h4>
+            <p>• 阶段化内容策略：第3天（使用/保养建议）→ 第14天（使用体验邀请评价）→ 第30天（搭配推荐/复购引导），不同节点生成不同内容<br>• 产品知识RAG：从品牌产品知识库中检索对应品类的保养知识、搭配建议，不允许AI凭空编造保养方法<br>• 事实核查：保养建议类内容必须可追溯到产品知识库原文，防止错误保养建议损害客户信任<br>• 情绪感知：若客户有投诉/退换货记录，自动抑制关怀推送，转交人工处理</p>
+          </div>
+          <div class="feature-card">
+            <h4>指标与评测</h4>
+            <p>• <strong>关怀内容事实准确率 ≥ 95%</strong>：保养/搭配建议无事实错误<br>• <strong>SA采纳率 ≥ 70%</strong>：购后关怀相对标准化，SA修改少<br>• <strong>客户收到关怀后的回复率 ≥ 15%</strong>：反映关怀内容的温度和共鸣感</p>
+          </div>
+        </div>
+      </div>
+
+      <!-- 共享底座 -->
+      <div class="tech-subsection">
+        <div class="tech-subtitle">三个场景的共享底座</div>
+        <table class="tech-table">
+          <tr><th>共享能力</th><th>说明</th></tr>
+          <tr><td>产品知识库 + RAG</td><td>按SKU维度切分产品数据，附品牌/品类/季节/价格带/库存状态元数据；新品上架自动入库 + 季末自动归档；支持多维过滤检索，避免推荐缺货商品</td></tr>
+          <tr><td>品牌调性Prompt模板库</td><td>每个品牌维护独立System Prompt（语气/称呼/禁用词/长度/emoji），SA切换品牌时自动加载</td></tr>
+          <tr><td>多品牌Prompt隔离</td><td>品牌配置层存储各品牌调性参数，集团层统一管理Prompt版本，支持A/B测试</td></tr>
+          <tr><td>内容反馈飞轮</td><td>SA对生成内容的修改记录回流 → 优化Prompt → 下次更贴近SA期望 → 采纳率提升</td></tr>
+        </table>
+      </div>
+    </div>
+
+        <!-- ═══ 方案三：Smart Moments ═══ -->
+    <div class="solution-header" style="margin-top:48px;">
+      <div class="solution-num">03</div>
+      <div class="solution-title">Smart Moments — 关键时刻引擎</div>
+    </div>
+    <p class="solution-subtitle">从静态画像到动态行动——融合多种客户信号，生成按优先级排序的每日行动清单，提醒SA主动出击。</p>
+
+    <div class="solution-brief">
+      <div class="solution-brief-item"><strong>用户</strong>门店SA（每日"今日待办"推送）</div>
+      <div class="solution-brief-item"><strong>场景：每日智能待办</strong>系统每天融合多种信号（沉默预警/重要日期/复购窗口/购后关怀节点），生成优先级排序的联系清单，每条附带客户画像摘要和建议话术</div>
+      <div class="solution-brief-item"><strong>示例</strong>🔴 李太太—生日明天+沉默60天（合并为1条）；🟡 陈先生—购买周年后第7天关怀；🟢 赵小姐—复购窗口预测命中</div>
+    </div>
+
+    <div class="tech-deep-dive">
+      <div class="tech-deep-title">AI技术方案</div>
+
+      <div class="tech-subsection">
+        <div class="tech-subtitle">每日智能待办 — AI工作流</div>
+        <div class="tech-pipeline">
+          <div class="tech-pipe-step">多信号源并行检测<br><span>沉默/日期/复购/购后节点</span></div>
+          <div class="tech-pipe-arrow">→</div>
+          <div class="tech-pipe-step">信号融合 + 去重<br><span>同一客户多信号合并</span></div>
+          <div class="tech-pipe-arrow">→</div>
+          <div class="tech-pipe-step">优先级排序<br><span>价值 × 紧迫度 × 响应概率</span></div>
+          <div class="tech-pipe-arrow">→</div>
+          <div class="tech-pipe-step">拉取客户画像<br><span>偏好标签 + 历史购买</span></div>
+          <div class="tech-pipe-arrow">→</div>
+          <div class="tech-pipe-step">调用品牌沟通助手<br><span>生成建议话术</span></div>
+          <div class="tech-pipe-arrow">→</div>
+          <div class="tech-pipe-step">SA端推送<br><span>今日待办按优先级排列</span></div>
+        </div>
+        <div class="feature-grid" style="margin-top:12px;">
+          <div class="feature-card">
+            <h4>技术要点</h4>
+            <p>• 多信号源融合：沉默预警（时序偏离检测）、重要日期（日历匹配）、复购窗口（购买周期建模）、购后节点（订单时间轴）——四类信号统一进入排序池<br>• 优先级排序算法：每条Moment的优先级 = 客户价值分（RFM）× 紧迫度分（距事件越近越高）× 预期响应概率（历史回复率），避免SA被大量提醒淹没<br>• 防打扰机制：同一客户同一时间段最多推送1条；多信号触发时自动合并（如"李太太同时命中沉默预警+生日临近"→ 合并为1条，优先展示生日）<br>• 跨Agent协同：Moment Agent决定"何时联系谁"→ Client Agent提供"这个人是谁"→ Voice Agent生成"怎么说"——Orchestration Agent统一编排</p>
+          </div>
+          <div class="feature-card">
+            <h4>指标与评测</h4>
+            <p>• <strong>信号检测召回率 ≥ 90%</strong>：应触发的Moment中系统实际检测到的比例<br>• <strong>SA每日Moment处理率 ≥ 70%</strong>：SA在48小时内执行联系的比例<br>• <strong>Moment驱动的客户回复率 ≥ 20%</strong>：通过Smart Moments发起的联系获得客户回复的比例<br>• <strong>预警客户挽留成功率 ≥ 15%</strong>：沉默预警后30天内恢复互动的客户比例</p>
+          </div>
+        </div>
+      </div>
+    </div>
+
+  </div>
+</section>
+
+<!-- 四、产品原型 -->
+<section id="prototypes" style="padding:60px 0;">
+  <div class="container">
+    <div class="section-label">Part 04</div>
+    <h2>产品原型</h2>
+    <p class="lead">三大核心功能的交互原型——点击顶部Tab切换 Client 360、Smart Moments、品牌沟通助手。</p>
+    <div style="margin-top:32px;border:1px solid var(--border);border-radius:0;overflow:hidden;">
+      <iframe src="kering-prototype.html" style="width:100%;height:680px;border:none;display:block;"></iframe>
+    </div>
+    <p style="font-size:12px;color:var(--text-secondary);margin-top:12px;text-align:center;">完整交互原型 · 可点击切换三个功能界面</p>
+  </div>
+</section>
+
+<!-- 五、第一个月行动计划 -->
+<section id="action-plan">
+  <div class="container">
+    <div class="section-label">Part 05</div>
+    <h2>第一个月行动计划</h2>
+    <p class="lead">核心原则：先理解再行动。</p>
+
+    <div class="timeline">
+      <div class="timeline-item">
+        <div class="timeline-week">Week 1</div>
+        <div class="timeline-title">Discovery — 理解业务现状</div>
+        <div class="timeline-question">"现在SA的一天是怎么过的？哪些环节最痛？"</div>
+        <table>
+          <tr><th>行动</th><th>具体做什么</th><th>产出</th></tr>
+          <tr><td>干系人访谈</td><td>与品牌零售负责人、资深SA、IT/数据团队深度交流</td><td>各角色对AI赋能的期望、担忧和痛点</td></tr>
+          <tr><td>门店走访</td><td>跟店1-2天，观察SA日常工作流程和客户互动方式</td><td>理解SA的真实工作场景</td></tr>
+          <tr><td>现有系统摸底</td><td>了解CRM、企微、KORE等系统的使用情况和数据现状</td><td>知道"起点在哪里"</td></tr>
+        </table>
+      </div>
+
+      <div class="timeline-item">
+        <div class="timeline-week">Week 2</div>
+        <div class="timeline-title">Analysis — 评估数据与技术就绪度</div>
+        <div class="timeline-question">"我们手上有什么牌？哪些能直接用，哪些需要补？"</div>
+        <table>
+          <tr><th>行动</th><th>具体做什么</th><th>产出</th></tr>
+          <tr><td>数据就绪度评估</td><td>盘点客户数据的完整度、质量、可用性</td><td>数据就绪度矩阵</td></tr>
+          <tr><td>AI能力评估</td><td>了解集团技术中心现有AI能力的成熟度</td><td>能力复用清单</td></tr>
+          <tr><td>合规预检</td><td>与法务/合规团队沟通PIPL约束</td><td>合规边界清单</td></tr>
+          <tr><td>竞品对标</td><td>研究LVMH MaIA等已验证方案</td><td>行业最佳实践参考</td></tr>
+        </table>
+      </div>
+
+      <div class="timeline-item">
+        <div class="timeline-week">Week 3</div>
+        <div class="timeline-title">Design — 定义MVP</div>
+        <div class="timeline-question">"MVP做什么、给谁用、怎么衡量成功？"</div>
+        <table>
+          <tr><th>行动</th><th>具体做什么</th><th>产出</th></tr>
+          <tr><td>MVP范围定义</td><td>基于W1-2的理解，选定MVP切入点</td><td>MVP定义文档</td></tr>
+          <tr><td>品牌试点选择</td><td>选择1个数据基础最好的品牌作为试点</td><td>试点品牌及理由</td></tr>
+          <tr><td>用户故事编写</td><td>与资深SA共同编写核心用户故事</td><td>3-5个核心用户故事</td></tr>
+          <tr><td>架构草案</td><td>基于集团技术中心现有能力画MVP技术架构</td><td>与架构师对齐的技术方案</td></tr>
+        </table>
+      </div>
+
+      <div class="timeline-item">
+        <div class="timeline-week">Week 4</div>
+        <div class="timeline-title">Alignment — 对齐与共识</div>
+        <div class="timeline-question">"各方是否对齐？SA是否买账？能不能启动开发？"</div>
+        <table>
+          <tr><th>行动</th><th>具体做什么</th><th>产出</th></tr>
+          <tr><td>方案汇报</td><td>向Line Manager和关键干系人汇报发现和MVP方案</td><td>获得方案认可和资源承诺</td></tr>
+          <tr><td>SA验证</td><td>将MVP原型给试点品牌SA看，收集反馈</td><td>SA的认可和改进建议</td></tr>
+          <tr><td>治理框架草案</td><td>定义MVP阶段的治理规则</td><td>治理框架V1（轻量版）</td></tr>
+          <tr><td>第二个月规划</td><td>制定Month 2-3的详细计划</td><td>后续路线图</td></tr>
+        </table>
+      </div>
+    </div>
+
+    <div class="example-box">
+      <div class="example-label">MVP切入点判断逻辑</div>
+      <table>
+        <tr><th>判断维度</th><th>Client 360</th><th>品牌沟通助手</th><th>Smart Moments</th></tr>
+        <tr><td>数据依赖</td><td>高</td><td>中</td><td>高（依赖Client 360）</td></tr>
+        <tr><td>技术依赖</td><td>中（NLP + RAG）</td><td>低（Prompt + RAG）</td><td>高（时序分析）</td></tr>
+        <tr><td>业务价值</td><td>最高（所有后续功能基础）</td><td>高（见效快）</td><td>中高（进阶能力）</td></tr>
+        <tr><td>变革难度</td><td>中</td><td>低（辅助工具，无侵入感）</td><td>中</td></tr>
+      </table>
+      <p style="margin-top:12px;">如果数据就绪度良好 → MVP从<strong>Client 360</strong>切入。如果数据基础薄弱 → 先从<strong>品牌沟通助手</strong>切入（数据依赖最低、变革阻力最小），快速出成果建立信任。</p>
+    </div>
+  </div>
+</section>
+
+<!-- 六、总结 -->
+<section id="summary" style="background:var(--black);padding:60px 0;">
+  <div class="container">
+    <div class="section-label" style="color:rgba(255,255,255,0.4);">Summary</div>
+    <p style="font-size:20px;font-weight:400;color:#fff;line-height:1.8;letter-spacing:-0.2px;max-width:700px;">
+      从客户旅程中识别AI创造价值的机会，<br>
+      以“增强人情味而非取代人”为原则设计产品，<br>
+      以画像、时机、沟通三大能力赋能SA，<br>
+      以“集团建能力、品牌建体验”为架构落地，<br>
+      以“先理解再行动”为执行节奏。
+    </p>
+  </div>
+</section>
+
+</body>
+</html>
