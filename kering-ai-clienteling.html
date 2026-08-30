@@ -493,8 +493,12 @@
 <section id="architecture">
   <div class="container">
     <div class="section-label">Part 02</div>
-    <h2>企业级AI架构设计</h2>
-    <p class="lead">集团建能力，品牌建体验。</p>
+    <h2>架构设计</h2>
+    <p class="lead">从集团级平台愿景到项目级AI系统设计。</p>
+
+    <!-- ═══ 2.1 企业架构 ═══ -->
+    <h3 style="font-size:18px;font-weight:400;margin-top:32px;margin-bottom:8px;">企业架构</h3>
+    <p style="margin-bottom:24px;">集团建能力，品牌建体验。</p>
 
     <!-- Layer 4: 应用层 (TOP) -->
     <div class="arch-layer-v2 arch-app">
@@ -734,6 +738,116 @@
         &middot; <strong>Layer 3（智能体层）</strong>&mdash; Orchestration Agent统一编排Client/Moment/Voice三个专用Agent，实现从单点工具到多Agent协同的跃迁。<br>
         &middot; <strong>Layer 4（应用层）</strong>&mdash; 四个应用交付业务价值，品牌配置层实现一套AI系统服务12个品牌的调性与数据隔离。
       </div>
+    </div>
+
+    <!-- ═══ 2.2 项目AI架构 ═══ -->
+    <h3 style="font-size:18px;font-weight:400;margin-top:48px;margin-bottom:8px;">项目AI架构</h3>
+    <p style="margin-bottom:24px;">Agent编排 &middot; AI流水线 &middot; 数据集成</p>
+
+    <!-- 触发层 -->
+    <div style="border:1px solid #000;padding:16px 20px;margin-bottom:0;">
+      <div style="font-size:13px;font-weight:600;margin-bottom:10px;">触发层</div>
+      <div style="display:flex;flex-wrap:wrap;gap:8px;">
+        <span style="background:#000;color:#fff;padding:4px 12px;font-size:12px;">SA查询</span>
+        <span style="background:#000;color:#fff;padding:4px 12px;font-size:12px;">客户事件</span>
+        <span style="background:#000;color:#fff;padding:4px 12px;font-size:12px;">日历事件</span>
+        <span style="background:#000;color:#fff;padding:4px 12px;font-size:12px;">订单事件</span>
+        <span style="background:#000;color:#fff;padding:4px 12px;font-size:12px;">沉默检测</span>
+        <span style="background:#000;color:#fff;padding:4px 12px;font-size:12px;">新品入库</span>
+      </div>
+    </div>
+
+    <div style="text-align:center;font-size:20px;line-height:1;padding:4px 0;">&#8595;</div>
+
+    <!-- Orchestration Agent -->
+    <div style="border:2px solid #000;padding:14px 20px;background:#000;color:#fff;">
+      <div style="display:flex;align-items:center;gap:12px;">
+        <span style="font-size:20px;">&#129517;</span>
+        <div>
+          <div style="font-size:14px;font-weight:600;">Orchestration Agent</div>
+          <div style="font-size:12px;opacity:0.8;">意图识别 &middot; 任务路由 &middot; 上下文传递 &middot; 冲突解决 &middot; 降级策略</div>
+        </div>
+      </div>
+    </div>
+
+    <div style="text-align:center;font-size:20px;line-height:1;padding:4px 0;">&#8595;</div>
+
+    <!-- 三个专用Agent -->
+    <div style="display:grid;grid-template-columns:1fr 1fr 1fr;gap:12px;margin-bottom:0;">
+      <div style="border:1px solid #000;padding:14px;text-align:center;">
+        <div style="font-size:18px;margin-bottom:4px;">&#128100;</div>
+        <div style="font-size:13px;font-weight:600;">Client Agent</div>
+        <div style="font-size:11px;color:#666;margin-top:2px;">客户画像理解</div>
+      </div>
+      <div style="border:1px solid #000;padding:14px;text-align:center;">
+        <div style="font-size:18px;margin-bottom:4px;">&#9201;</div>
+        <div style="font-size:13px;font-weight:600;">Moment Agent</div>
+        <div style="font-size:11px;color:#666;margin-top:2px;">时机洞察引擎</div>
+      </div>
+      <div style="border:1px solid #000;padding:14px;text-align:center;">
+        <div style="font-size:18px;margin-bottom:4px;">&#9997;</div>
+        <div style="font-size:13px;font-weight:600;">Voice Agent</div>
+        <div style="font-size:11px;color:#666;margin-top:2px;">内容生成引擎</div>
+      </div>
+    </div>
+
+    <div style="text-align:center;font-size:20px;line-height:1;padding:4px 0;">&#8595;</div>
+
+    <!-- AI处理流水线 -->
+    <div style="border:1px solid #000;padding:16px 20px;">
+      <div style="font-size:13px;font-weight:600;margin-bottom:12px;">AI处理流水线</div>
+      <div style="display:flex;align-items:center;gap:0;flex-wrap:wrap;">
+        <div style="flex:1;min-width:100px;border:1px solid #ccc;padding:10px;text-align:center;">
+          <div style="font-size:12px;font-weight:600;">Context<br>Engineering</div>
+          <div style="font-size:10px;color:#666;margin-top:4px;">上下文构建</div>
+        </div>
+        <div style="padding:0 6px;font-size:16px;color:#999;">&#8594;</div>
+        <div style="flex:1;min-width:100px;border:1px solid #ccc;padding:10px;text-align:center;">
+          <div style="font-size:12px;font-weight:600;">RAG<br>检索</div>
+          <div style="font-size:10px;color:#666;margin-top:4px;">多路检索 &middot; Rerank</div>
+        </div>
+        <div style="padding:0 6px;font-size:16px;color:#999;">&#8594;</div>
+        <div style="flex:1;min-width:100px;border:1px solid #ccc;padding:10px;text-align:center;">
+          <div style="font-size:12px;font-weight:600;">LLM<br>生成</div>
+          <div style="font-size:10px;color:#666;margin-top:4px;">结构化Prompt</div>
+        </div>
+        <div style="padding:0 6px;font-size:16px;color:#999;">&#8594;</div>
+        <div style="flex:1;min-width:100px;border:1px solid #ccc;padding:10px;text-align:center;">
+          <div style="font-size:12px;font-weight:600;">质量检查</div>
+          <div style="font-size:10px;color:#666;margin-top:4px;">幻觉检测 &middot; 调性校验</div>
+        </div>
+        <div style="padding:0 6px;font-size:16px;color:#999;">&#8594;</div>
+        <div style="flex:1;min-width:100px;border:1px solid #000;background:#f5f5f5;padding:10px;text-align:center;">
+          <div style="font-size:12px;font-weight:600;">置信度<br>输出</div>
+          <div style="font-size:10px;color:#666;margin-top:4px;">高/中/低分级</div>
+        </div>
+      </div>
+    </div>
+
+    <div style="text-align:center;font-size:20px;line-height:1;padding:4px 0;">&#8595;</div>
+
+    <!-- 数据与集成层 -->
+    <div style="border:1px solid #000;padding:16px 20px;">
+      <div style="font-size:13px;font-weight:600;margin-bottom:12px;">数据与集成层</div>
+      <div style="display:grid;grid-template-columns:1fr 1fr 1fr 1fr;gap:10px;margin-bottom:12px;">
+        <div style="background:#f5f5f5;padding:10px;text-align:center;">
+          <div style="font-size:12px;font-weight:600;">客户画像DB</div>
+          <div style="font-size:10px;color:#666;margin-top:2px;">向量 + 结构化</div>
+        </div>
+        <div style="background:#f5f5f5;padding:10px;text-align:center;">
+          <div style="font-size:12px;font-weight:600;">产品知识库</div>
+          <div style="font-size:10px;color:#666;margin-top:2px;">RAG源</div>
+        </div>
+        <div style="background:#f5f5f5;padding:10px;text-align:center;">
+          <div style="font-size:12px;font-weight:600;">品牌调性库</div>
+          <div style="font-size:10px;color:#666;margin-top:2px;">Prompt注入</div>
+        </div>
+        <div style="background:#f5f5f5;padding:10px;text-align:center;">
+          <div style="font-size:12px;font-weight:600;">互动历史</div>
+          <div style="font-size:10px;color:#666;margin-top:2px;">企微 / CRM</div>
+        </div>
+      </div>
+      <div style="font-size:11px;color:#666;border-top:1px solid #eee;padding-top:10px;">外部系统集成：KORE（客户数据）&middot; 企微（SA入口）&middot; POS（交易数据）</div>
     </div>
   </div>
 </section>
